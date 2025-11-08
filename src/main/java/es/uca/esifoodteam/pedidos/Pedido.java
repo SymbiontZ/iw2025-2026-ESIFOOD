@@ -1,16 +1,13 @@
 package es.uca.esifoodteam.pedidos;
 
+import jakarta.persistence.*;
+
 import java.sql.Time;
-import java.util.Date;
-
-import javax.persistence.Entity;
-
-import com.vaadin.flow.component.template.Id;
-
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.ManyToOne;
+import java.sql.Date;
+import java.util.List;
 
 @Entity
+@Table(name = "pedido")
 public class Pedido {
 	@Id
     @GeneratedValue
@@ -23,6 +20,9 @@ public class Pedido {
 
     @ManyToOne
     private EstadoPedido estado;
+
+    @OneToMany(mappedBy = "pedido")
+    private List<LineaPedido> lineasPedido;
 
     public Long getId() {
         return id;

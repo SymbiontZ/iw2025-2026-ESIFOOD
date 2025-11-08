@@ -1,8 +1,6 @@
 package es.uca.esifoodteam.pedidos;
-import com.vaadin.flow.component.template.Id;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.*;
 
 @Entity
 public class EstadoPedido {
