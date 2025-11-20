@@ -1,5 +1,7 @@
 package es.uca.esifoodteam.productos;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -20,6 +22,9 @@ public class Producto {
 
     @Column(nullable = false)
     private String imagen_url;
+
+    @ManyToMany(mappedBy="productos")
+    private List<Ingrediente> ingredientes;
 
 
     public Long getId() {
