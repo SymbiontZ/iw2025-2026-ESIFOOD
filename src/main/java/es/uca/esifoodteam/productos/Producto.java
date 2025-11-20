@@ -9,8 +9,18 @@ public class Producto {
     @GeneratedValue
     private Long id;
 
+    @Column(nullable = false)
     private String nombre;
+
+    @Column(nullable = false)
     private Double precio;
+
+    @Column(nullable = false)
+    private String descripcion;
+
+    @Column(nullable = false)
+    private String imagen_url;
+
 
     public Long getId() {
         return id;
@@ -34,5 +44,21 @@ public class Producto {
 
     public void setPrecio(Double precio) {
         this.precio = precio;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public String getImagenUrl() {
+        return imagen_url;
+    }
+
+    public void setImagenUrl(String imagen_url) {
+        this.imagen_url = imagen_url;
     }
 }

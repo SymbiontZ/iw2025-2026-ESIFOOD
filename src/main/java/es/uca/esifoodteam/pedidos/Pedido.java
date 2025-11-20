@@ -2,9 +2,10 @@ package es.uca.esifoodteam.pedidos;
 
 import jakarta.persistence.*;
 
-import java.sql.Time;
-import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
+
+import es.uca.esifoodteam.usuarios.Usuario;
 
 @Entity
 @Table(name = "pedido")
@@ -12,11 +13,23 @@ public class Pedido {
 	@Id
     @GeneratedValue
     private Long id;
-    
-    private String descripcion;
+
+    @Column(name="price", nullable = false)
     private Double precio;
-    private Date fecha;
-    private Time hora;
+    
+    @Column(name="created_datetime", nullable = false)
+    private LocalDateTime fechaCreacion;
+
+    @Column(name="updated_datetime", nullable = false)
+    private LocalDateTime fechaActualizacion;
+
+    @ManyToOne
+    @JoinColumn(name="created_by", nullable = false)
+    private Usuario creadoPor;
+
+    @ManyToOne
+    @JoinColumn(name="updated_by", nullable = false)
+    private Usuario actualizadoPor;
 
     @ManyToOne
     private EstadoPedido estado;
@@ -32,14 +45,6 @@ public class Pedido {
         this.id = id;
     }
 
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
     public Double getPrecio() {
         return precio;
     }
@@ -48,20 +53,36 @@ public class Pedido {
         this.precio = precio;
     }
 
-    public Date getFecha() {
-        return fecha;
+    public LocalDateTime getFechaCreacion() {
+        return fechaCreacion;
     }
 
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
+    public void setFechaCreacion(LocalDateTime fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
     }
 
-    public Time getHora() {
-        return hora;
+    public LocalDateTime getFechaActualizacion() {
+        return fechaActualizacion;
     }
 
-    public void setHora(Time hora) {
-        this.hora = hora;
+    public void setFechaActualizacion(LocalDateTime fechaActualizacion) {
+        this.fechaActualizacion = fechaActualizacion;
+    }
+
+    public Usuario getCreadoPor() {
+        return creadoPor;
+    }
+
+    public void setCreadoPor(Usuario creadoPor) {
+        this.creadoPor = creadoPor;
+    }
+
+    public Usuario getActualizadoPor() {
+        return actualizadoPor;
+    }
+
+    public void setActualizadoPor(Usuario actualizadoPor) {
+        this.actualizadoPor = actualizadoPor;
     }
 
     public EstadoPedido getEstado() {
