@@ -3,24 +3,23 @@ package es.uca.esifoodteam.usuarios;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
-
 @Entity
-@Table(name = "tipo_usuario")
-public class TipoUsuario {
+@Table(name = "estado_usuario")
+public class EstadoUsuario {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    @NotBlank
-    @Column(nullable = false)
-    private String nombre;
 
+    @NotBlank
+    @Column(unique = true, nullable = false)
+    private String nombre;  
 
     // Constructor vacío
-    public TipoUsuario() {}
-    
+    public EstadoUsuario() {}
+
     // Constructor útil
-    public TipoUsuario(String nombre) {
+    public EstadoUsuario(String nombre) {
         this.nombre = nombre;
     }
 
