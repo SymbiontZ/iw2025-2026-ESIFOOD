@@ -1,13 +1,13 @@
 package es.uca.esifoodteam.productos;
 
-import java.util.List;
-
-import org.springframework.jmx.export.annotation.ManagedAttribute;
+import java.util.HashSet;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 
@@ -15,39 +15,30 @@ import jakarta.persistence.ManyToMany;
 @Table(name = "ingrediente")
 public class Ingrediente {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="name", nullable = false)
+    @Column(nullable = false, length = 100)
     private String nombre;
 
-    @Column(name="stock", nullable = false)
-    private Double stock;
+    @Column(nullable = false)
+    private Integer stock;
 
-    @ManyToMany
-    private List<Producto> productos;
+    @ManyToMany(mappedBy = "ingredientes")
+    private Set<Producto> productos = new HashSet<>();
 
-    public Long getId() {
-        return id;
-    }
+    public Ingrediente() {}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public String getNombre() {
-        return nombre;
-    }
+    public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
+    public Integer getStock() { return stock; }
+    public void setStock(Integer stock) { this.stock = stock; }
 
-    public Double getStock() {
-        return stock;
-    }
+    public Set<Producto> getProductos() { return productos; }
+    public void setProductos(Set<Producto> productos) { this.productos = productos; }
 
-    public void setStock(Double stock) {
-        this.stock = stock;
-    }
 }

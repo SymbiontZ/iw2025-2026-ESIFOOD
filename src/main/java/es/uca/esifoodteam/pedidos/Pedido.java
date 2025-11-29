@@ -2,95 +2,85 @@ package es.uca.esifoodteam.pedidos;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
+import es.uca.esifoodteam.locales.Local;
 import es.uca.esifoodteam.usuarios.Usuario;
 
 @Entity
 @Table(name = "pedido")
 public class Pedido {
-	@Id
-    @GeneratedValue
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="price", nullable = false)
-    private Double precio;
-    
-    @Column(name="created_datetime", nullable = false)
-    private LocalDateTime fechaCreacion;
-
-    @Column(name="updated_datetime", nullable = false)
-    private LocalDateTime fechaActualizacion;
-
-    @ManyToOne
-    @JoinColumn(name="created_by", nullable = false)
-    private Usuario creadoPor;
-
-    @ManyToOne
-    @JoinColumn(name="updated_by", nullable = false)
-    private Usuario actualizadoPor;
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "estado_id", nullable = false)
     private EstadoPedido estado;
 
-    @OneToMany(mappedBy = "pedido")
-    private List<LineaPedido> lineasPedido;
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ActualizacionPedido> actualizaciones = new ArrayList<>();
 
-    public Long getId() {
-        return id;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private Usuario usuario;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<LineaPedido> lineas = new ArrayList<>();
 
-    public Double getPrecio() {
-        return precio;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "local_id", nullable = false)
+    private Local local;
 
-    public void setPrecio(Double precio) {
-        this.precio = precio;
-    }
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal precio;
 
-    public LocalDateTime getFechaCreacion() {
-        return fechaCreacion;
-    }
+    @Column(nullable = false)
+    private LocalDateTime fechaHora;  
 
-    public void setFechaCreacion(LocalDateTime fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
-    }
+    @Column(length = 500)
+    private String observaciones;
 
-    public LocalDateTime getFechaActualizacion() {
-        return fechaActualizacion;
-    }
+    // Constructor vacío requerido por JPA
+    public Pedido() {}
 
-    public void setFechaActualizacion(LocalDateTime fechaActualizacion) {
-        this.fechaActualizacion = fechaActualizacion;
-    }
-
-    public Usuario getCreadoPor() {
-        return creadoPor;
-    }
-
-    public void setCreadoPor(Usuario creadoPor) {
-        this.creadoPor = creadoPor;
-    }
-
-    public Usuario getActualizadoPor() {
-        return actualizadoPor;
-    }
-
-    public void setActualizadoPor(Usuario actualizadoPor) {
-        this.actualizadoPor = actualizadoPor;
-    }
-
-    public EstadoPedido getEstado() {
-        return estado;
-    }
-
-    public void setEstado(EstadoPedido estado) {
+    // Constructor con parámetros
+    public Pedido(EstadoPedido estado, Usuario usuario, BigDecimal precio, LocalDateTime fechaHora, String observaciones) {
         this.estado = estado;
+        this.usuario = usuario;
+        this.precio = precio;
+        this.fechaHora = fechaHora;
+        this.observaciones = observaciones;
     }
 
+    // Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public EstadoPedido getEstado() { return estado; }
+    public void setEstado(EstadoPedido estado) { this.estado = estado; }
+
+    public Usuario getUsuario() { return usuario; }
+    public void setUsuario(Usuario usuario) { this.usuario = usuario; }
+
+    public BigDecimal getPrecio() { return precio; }
+    public void setPrecio(BigDecimal precio) { this.precio = precio; }
+
+    public LocalDateTime getFechaHora() { return fechaHora; }
+    public void setFechaHora(LocalDateTime fechaHora) { this.fechaHora = fechaHora; }
+
+    public String getObservaciones() { return observaciones; }
+    public void setObservaciones(String observaciones) { this.observaciones = observaciones; }
+
+    public List<ActualizacionPedido> getActualizaciones() { return actualizaciones; }
+    public void setActualizaciones(List<ActualizacionPedido> actualizaciones) { this.actualizaciones = actualizaciones; }
+
+    public List<LineaPedido> getLineas() { return lineas; }
+    public void setLineas(List<LineaPedido> lineas) { this.lineas = lineas; }
+
+    public Local getLocal() { return local; }
+    public void setLocal(Local local) { this.local = local; }
 }

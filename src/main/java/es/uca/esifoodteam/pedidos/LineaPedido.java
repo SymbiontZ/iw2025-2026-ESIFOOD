@@ -1,7 +1,8 @@
 package es.uca.esifoodteam.pedidos;
 
 import jakarta.persistence.*;
-
+import jakarta.validation.constraints.Min;
+import java.math.BigDecimal;
 
 import es.uca.esifoodteam.productos.Producto;
 
@@ -10,58 +11,44 @@ import es.uca.esifoodteam.productos.Producto;
 public class LineaPedido {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "pedido_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pedido_id", nullable = false)
     private Pedido pedido;
 
-    @ManyToOne
-    @JoinColumn(name = "producto_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "producto_id", nullable = false)
     private Producto producto;
 
-    private Integer cantidad;
+    @Min(1)
+    @Column(nullable = false)
+    private int cantidad;
 
-    private Double precioUnit;
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal precio_u;
 
-    public Long getId() {
-        return id;
-    }
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal subtotal;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public LineaPedido() {}
 
-    public Pedido getPedido() {
-        return pedido;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setPedido(Pedido pedido) {
-        this.pedido = pedido;
-    }
+    public Pedido getPedido() { return pedido; }
+    public void setPedido(Pedido pedido) { this.pedido = pedido; }
 
-    public Producto getProducto() {
-        return producto;
-    }
+    public Producto getProducto() { return producto; }
+    public void setProducto(Producto producto) { this.producto = producto; }
 
-    public void setProducto(Producto producto) {
-        this.producto = producto;
-    }
+    public int getCantidad() { return cantidad; }
+    public void setCantidad(int cantidad) { this.cantidad = cantidad; }
 
-    public Integer getCantidad() {
-        return cantidad;
-    }
+    public BigDecimal getPrecioUnitario() { return precio_u; }
+    public void setPrecioUnitario(BigDecimal precio_u) { this.precio_u = precio_u; }
 
-    public void setCantidad(Integer cantidad) {
-        this.cantidad = cantidad;
-    }
-
-    public Double getPrecioUnit() {
-        return precioUnit;
-    }
-
-    public void setPrecioUnit(Double precioUnit) {
-        this.precioUnit = precioUnit;
-    }
+    public BigDecimal getSubtotal() { return subtotal; }
+    public void setSubtotal(BigDecimal subtotal) { this.subtotal = subtotal; }
 }

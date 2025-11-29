@@ -1,27 +1,46 @@
 package es.uca.esifoodteam.productos;
 
-import java.util.*;
-
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
+@Transactional
 public class ProductoService {
-    private final ProductoRepository productoRepo;
 
-    public ProductoService(ProductoRepository productoRepo) {
-        this.productoRepo = productoRepo;
-    }
+    private final ProductoRepository productoRepository;
 
-    public Producto save(Producto producto) {
-        return productoRepo.save(producto);
-    }
-
-    public Producto findById(Long id) {
-        return productoRepo.findById(id).orElse(null);
+    public ProductoService(ProductoRepository productoRepository) {
+        this.productoRepository = productoRepository;
     }
 
     public List<Producto> findAll() {
-        return productoRepo.findAll();
+        return productoRepository.findAll();
     }
 
+    public Optional<Producto> findById(Long id) {
+        return productoRepository.findById(id);
+    }
+
+    public List<Producto> buscarPorNombre(String filtro) {
+        return productoRepository.findByNombreContainingIgnoreCase(filtro);
+    }
+
+    public List<Producto> findByLocal(Long localId) {
+        return productoRepository.findByLocalId(localId);
+    }
+
+    public List<Producto> findDisponibles() {
+        return productoRepository.findByDisponibleTrue();
+    }
+
+    public Producto save(Producto producto) {
+        return productoRepository.save(producto);
+    }
+
+    public void delete(Long id) {
+        productoRepository.deleteById(id);
+    }
 }

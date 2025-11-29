@@ -11,46 +11,43 @@ public class ActualizacionPedido {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @Column(nullable = false)
+    private LocalDateTime fechaHora;
+
+    @Column(length = 500)
+    private String comentario;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pedido_id", nullable = false)
     private Pedido pedido;
 
-    @ManyToOne
-    @JoinColumn(name = "estado_pedido_id", nullable = false)
-    private EstadoPedido estadoPedido;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "estado_id", nullable = false)
+    private EstadoPedido estado;
 
-    @Column(name = "fecha_actualizacion", nullable = false)
-    private LocalDateTime fechaActualizacion;
+    // Constructor vacío
+    public ActualizacionPedido() {}
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Pedido getPedido() {
-        return pedido;
-    }
-
-    public void setPedido(Pedido pedido) {
+    // Constructor con parámetros
+    public ActualizacionPedido(LocalDateTime fechaHora, String comentario, Pedido pedido) {
+        this.fechaHora = fechaHora;
+        this.comentario = comentario;
         this.pedido = pedido;
     }
 
-    public EstadoPedido getEstadoPedido() {
-        return estadoPedido;
-    }
+    // Getters y setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setEstadoPedido(EstadoPedido estadoPedido) {
-        this.estadoPedido = estadoPedido;
-    }
+    public LocalDateTime getFechaHora() { return fechaHora; }
+    public void setFechaHora(LocalDateTime fechaHora) { this.fechaHora = fechaHora; }
 
-    public LocalDateTime getFechaActualizacion() {
-        return fechaActualizacion;
-    }
+    public String getComentario() { return comentario; }
+    public void setComentario(String comentario) { this.comentario = comentario; }
 
-    public void setFechaActualizacion(LocalDateTime fechaActualizacion) {
-        this.fechaActualizacion = fechaActualizacion;
-    }
+    public Pedido getPedido() { return pedido; }
+    public void setPedido(Pedido pedido) { this.pedido = pedido; }
+
+    public EstadoPedido getEstado() { return estado; }
+    public void setEstado(EstadoPedido estado) { this.estado = estado; }
 }

@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import es.uca.esifoodteam.locales.Local;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -20,11 +21,15 @@ public class Usuario {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tipo_id", nullable = false)
-    private TipoUsuario tipo_id;
+    private TipoUsuario tipo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "estado_id", nullable = false)
-    private EstadoUsuario estado_id;
+    private EstadoUsuario estado;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "local_id")   // puede ser null si es cliente
+    private Local localTrabajo;
 
     @NotBlank(message = "El nombre es obligatorio")
     @Size(max = 100, message = "El nombre no puede exceder 100 caracteres")
@@ -63,10 +68,10 @@ public class Usuario {
     public Usuario() {}
 
     // Constructor útil
-    public Usuario(Long id, TipoUsuario tipo_id, EstadoUsuario estado_id, String nombre, String email, String telefono, String direccion, String dni, LocalDateTime fechaCreacion, LocalDateTime fechaActualizacion) {
+    public Usuario(Long id, TipoUsuario tipo, EstadoUsuario estado, String nombre, String email, String telefono, String direccion, String dni, LocalDateTime fechaCreacion, LocalDateTime fechaActualizacion) {
         this.id = id;
-        this.tipo_id = tipo_id;
-        this.estado_id = estado_id;
+        this.tipo = tipo;
+        this.estado = estado;
         this.nombre = nombre;
         this.email = email;
         this.telefono = telefono;
@@ -86,11 +91,11 @@ public class Usuario {
     public String getEmail() { return email; }
     public void setEmail(String email) {  this.email = email; }
 
-    public TipoUsuario getTipo_id() { return tipo_id; }
-    public void setTipo_id(TipoUsuario tipo_id) { this.tipo_id = tipo_id; }
+    public TipoUsuario getTipo_id() { return tipo; }
+    public void setTipo_id(TipoUsuario tipo) { this.tipo = tipo; }
 
-    public EstadoUsuario getEstado_id() { return estado_id; }
-    public void setEstado_id(EstadoUsuario estado_id) { this.estado_id = estado_id; }
+    public EstadoUsuario getEstado_id() { return estado; }
+    public void setEstado_id(EstadoUsuario estado) { this.estado = estado; }
 
     public String getTelefono() { return telefono; }
     public void setTelefono(String telefono) { this.telefono = telefono; }
@@ -106,4 +111,7 @@ public class Usuario {
 
     public LocalDateTime getFechaActualizacion() { return fechaActualizacion; }
     public void setFechaActualizacion(LocalDateTime fechaActualizacion) { this.fechaActualizacion = fechaActualizacion; }
+
+    public Local getLocalTrabajo() { return localTrabajo; }
+    public void setLocalTrabajo(Local localTrabajo) { this.localTrabajo = localTrabajo; }
 }
