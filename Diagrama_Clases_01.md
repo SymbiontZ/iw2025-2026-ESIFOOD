@@ -11,51 +11,64 @@ classDiagram
 
     %% --- Usuarios ---
     class Usuario {
-      String nombre
-      String email
+      Long id <<PK>>
+      String nombre [NOT NULL, len 1..100]
+      String email [NOT NULL, UNIQUE, formato email]
     }
     class TipoUsuario {
-      String nombre
+      Long id <<PK>>
+      String nombre [NOT NULL, UNIQUE]
     }
 
     %% --- Pedidos ---
     class Pedido {
-      BigDecimal precio
-      Date fecha
-      Time hora
+      Long id <<PK>>
+      BigDecimal precio [NOT NULL, >= 0]
+      Date fecha [NOT NULL]
+      Time hora [NOT NULL]
     }
     class EstadoPedido {
-      String nombre
+      Long id <<PK>>
+      String nombre [NOT NULL, UNIQUE]
     }
     class ActualizacionPedido {
-      Date fecha
-      Time hora
+      Long id <<PK>>
+      Date fecha [NOT NULL]
+      Time hora [NOT NULL]
+      String comentario [opc., len 0..255]
     }
     class LineaPedido {
-      BigDecimal precio_u
-      int cantidad
+      Long id <<PK>>
+      BigDecimal precio_u [NOT NULL, > 0]
+      int cantidad [NOT NULL, >= 1]
     }
 
     %% --- Productos y Menús ---
     class Producto {
-      String nombre
-      BigDecimal precio
+      Long id <<PK>>
+      String nombre [NOT NULL, len 1..100]
+      BigDecimal precio [NOT NULL, >= 0]
     }
-    class Simple {}
-    class Menu {}
+    class Simple {
+    }
+    class Menu {
+    }
     class TipoProducto {
-      String nombre
+      Long id <<PK>>
+      String nombre [NOT NULL, UNIQUE]
     }
     class Ingrediente {
-      String nombre
-      int stock
+      Long id <<PK>>
+      String nombre [NOT NULL, UNIQUE]
+      int stock [NOT NULL, >= 0]
     }
 
     %% --- Locales ---
     class Local {
-      String nombre
-      String direccion
-      boolean estaAbierto
+      Long id <<PK>>
+      String nombre [NOT NULL, UNIQUE]
+      String direccion [NOT NULL, len 1..200]
+      boolean estaAbierto [NOT NULL]
     }
 
     %% ==== RELACIONES ====
@@ -63,7 +76,8 @@ classDiagram
     %% --- Usuario ---
     Usuario "*" -- "1" TipoUsuario : tipo
     Usuario "1" -- "*" Pedido : realiza
-    Usuario "*" -- "1" Local : trabaja_en
+    %% Si el Usuario incluye clientes y empleados, convendría que fuese opcional:
+    Usuario "*" -- "0..1" Local : trabaja_en
 
     %% --- Pedido ---
     Pedido "1" -- "*" LineaPedido : contiene
@@ -80,4 +94,3 @@ classDiagram
     Producto "*" -- "*" Ingrediente : usa
     Simple "*" -- "1" TipoProducto : pertenece_a
 
-   
