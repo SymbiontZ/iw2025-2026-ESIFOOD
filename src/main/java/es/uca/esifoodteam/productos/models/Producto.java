@@ -9,7 +9,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import es.uca.esifoodteam.establecimientos.Local;
+import org.springframework.cglib.core.Local;
+
+import es.uca.esifoodteam.establecimientos.Establecimiento;
 import es.uca.esifoodteam.pedidos.models.LineaPedido;
 
 @Entity
@@ -21,9 +23,6 @@ public class Producto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "local_id", nullable = false)
-    private Local local;
 
     @ManyToMany
     @JoinTable(
@@ -78,9 +77,6 @@ public class Producto {
 
     public List<LineaPedido> getLineas() { return lineas; }
     public void setLineas(List<LineaPedido> lineas) { this.lineas = lineas; }
-
-    public Local getLocal() { return local; }
-    public void setLocal(Local local) { this.local = local; }
 
     public Set<Ingrediente> getIngredientes() { return ingredientes; }
     public void setIngredientes(Set<Ingrediente> ingredientes) { this.ingredientes = ingredientes; }

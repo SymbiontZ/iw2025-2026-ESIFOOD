@@ -1,6 +1,6 @@
 package es.uca.esifoodteam.components.productos;
 
-import es.uca.esifoodteam.productos.*;
+import es.uca.esifoodteam.productos.models.Producto;
 
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;

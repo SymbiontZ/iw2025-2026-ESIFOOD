@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import es.uca.esifoodteam.establecimientos.Local;
+import es.uca.esifoodteam.establecimientos.Establecimiento;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -25,7 +25,7 @@ public class Usuario {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "local_id")   // puede ser null si es cliente
-    private Local localTrabajo;
+    private Establecimiento establecimientoTrabajo;
 
     @NotBlank(message = "El nombre es obligatorio")
     @Size(max = 100, message = "El nombre no puede exceder 100 caracteres")
@@ -99,6 +99,6 @@ public class Usuario {
     public LocalDateTime getFechaActualizacion() { return fechaActualizacion; }
     public void setFechaActualizacion(LocalDateTime fechaActualizacion) { this.fechaActualizacion = fechaActualizacion; }
 
-    public Local getLocalTrabajo() { return localTrabajo; }
-    public void setLocalTrabajo(Local localTrabajo) { this.localTrabajo = localTrabajo; }
+    public Establecimiento getLocalTrabajo() { return establecimientoTrabajo; }
+    public void setLocalTrabajo(Establecimiento establecimientoTrabajo) { this.establecimientoTrabajo = establecimientoTrabajo; }
 }
