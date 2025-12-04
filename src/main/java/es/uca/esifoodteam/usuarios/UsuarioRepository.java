@@ -11,13 +11,11 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     // Búsquedas por campos únicos
     Optional<Usuario> findByEmail(String email);
     Optional<Usuario> findByTelefono(String telefono);
-    Optional<Usuario> findByDni(String dni);
     boolean existsByEmail(String email);
     boolean existsByTelefono(String telefono);
-    boolean existsByDni(String dni);
     
     // Búsquedas por relaciones
-    List<Usuario> findByTipo(Long tipoId);
+    List<Usuario> findByTipo(TipoUsuario tipo);
     List<Usuario> findByEstado(Boolean esActivo);
     
 

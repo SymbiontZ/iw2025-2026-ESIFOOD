@@ -13,9 +13,6 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
     // Buscar por nombre (contiene, ignorando mayúsculas/minúsculas)
     List<Producto> findByNombreContainingIgnoreCase(String nombre);
 
-    // Buscar por local
-    List<Producto> findByLocalId(Long localId);
-
     // Solo disponibles
     List<Producto> findByDisponibleTrue();
 
