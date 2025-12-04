@@ -1,4 +1,4 @@
-package es.uca.esifoodteam.locales;
+package es.uca.esifoodteam.establecimientos;
 
 
 import java.util.ArrayList;
@@ -15,8 +15,8 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "local")
-public class Local {
+@Table(name = "establecimiento")
+public class Establecimiento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,13 +27,18 @@ public class Local {
     @Column(nullable = false, length = 255)
     private String direccion;
 
-    @Column(nullable = false)
-    private boolean estaAbierto;
+    @Column(nullable = true)
+    private Boolean estaDisponible = true;
 
-    @OneToMany(mappedBy = "local", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "establecimiento", fetch = FetchType.LAZY)
     private List<Producto> productos = new ArrayList<>();
 
-    public Local() {}
+    public Establecimiento() {}
+
+    public Establecimiento(String nombre, String direccion){
+        this.nombre = nombre;
+        this.direccion = direccion;
+    }
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -44,8 +49,8 @@ public class Local {
     public String getDireccion() { return direccion; }
     public void setDireccion(String direccion) { this.direccion = direccion; }
 
-    public boolean isEstaAbierto() { return estaAbierto; }
-    public void setEstaAbierto(boolean estaAbierto) { this.estaAbierto = estaAbierto; }
+    public Boolean getEstaDisponible() { return estaDisponible; }
+    public void setEstaDisponible(Boolean estaDisponible) { this.estaDisponible = estaDisponible; }
 
     public List<Producto> getProductos() { return productos; }
     public void setProductos(List<Producto> productos) { this.productos = productos; }

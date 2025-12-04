@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import es.uca.esifoodteam.locales.Local;
+import es.uca.esifoodteam.establecimientos.Local;
 import es.uca.esifoodteam.usuarios.Usuario;
 
 @Entity

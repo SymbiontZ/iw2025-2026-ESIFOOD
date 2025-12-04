@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import es.uca.esifoodteam.locales.Local;
+import es.uca.esifoodteam.establecimientos.Local;
 import es.uca.esifoodteam.pedidos.models.LineaPedido;
 
 @Entity
