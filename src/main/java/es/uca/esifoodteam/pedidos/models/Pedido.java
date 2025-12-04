@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import es.uca.esifoodteam.establecimientos.Local;
+import es.uca.esifoodteam.establecimientos.Establecimiento;
 import es.uca.esifoodteam.usuarios.Usuario;
 
 @Entity
@@ -32,8 +32,8 @@ public class Pedido {
     private List<LineaPedido> lineas = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "local_id", nullable = false)
-    private Local local;
+    @JoinColumn(name = "establecimiento_id", nullable = false)
+    private Establecimiento establecimiento;
 
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal precio;
@@ -81,6 +81,6 @@ public class Pedido {
     public List<LineaPedido> getLineas() { return lineas; }
     public void setLineas(List<LineaPedido> lineas) { this.lineas = lineas; }
 
-    public Local getLocal() { return local; }
-    public void setLocal(Local local) { this.local = local; }
+    public Establecimiento getLocal() { return establecimiento; }
+    public void setLocal(Establecimiento establecimiento) { this.establecimiento = establecimiento; }
 }
