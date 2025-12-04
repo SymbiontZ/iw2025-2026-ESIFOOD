@@ -9,7 +9,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.cglib.core.Local;
 
 import es.uca.esifoodteam.establecimientos.Establecimiento;
 import es.uca.esifoodteam.pedidos.models.LineaPedido;
