@@ -82,7 +82,7 @@ public class UsuarioService {
     }
 
     public List<Usuario> findActivos() {
-        return usuarioRepository.findByEstado((long)1);
+        return usuarioRepository.findByEstado(true);
     }
 
     public List<Usuario> searchByNombre(String nombre) {
