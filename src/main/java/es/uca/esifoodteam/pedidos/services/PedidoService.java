@@ -1,4 +1,4 @@
-package es.uca.esifoodteam.pedidos;
+package es.uca.esifoodteam.pedidos.services;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -6,6 +6,9 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import es.uca.esifoodteam.pedidos.models.Pedido;
+import es.uca.esifoodteam.pedidos.repositories.PedidoRepository;
 
 @Service
 @Transactional

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 import es.uca.esifoodteam.locales.Local;
-import es.uca.esifoodteam.pedidos.LineaPedido;
+import es.uca.esifoodteam.pedidos.models.LineaPedido;
 
 @Entity
 @Table(name = "producto")

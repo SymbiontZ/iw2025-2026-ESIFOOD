@@ -18,7 +18,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     
     // Búsquedas por relaciones
     List<Usuario> findByTipo(Long tipoId);
-    List<Usuario> findByEstado(Long estadoId);
+    List<Usuario> findByEstado(Boolean esActivo);
     
 
     
