@@ -51,6 +51,9 @@ public class Producto {
     @Column(nullable = false)
     private boolean disponible = true;
 
+    @Column(nullable = true)
+    private String imagen_url;
+
     
 
     public Producto() {}
@@ -69,6 +72,9 @@ public class Producto {
 
     public boolean isDisponible() { return disponible; }
     public void setDisponible(boolean disponible) { this.disponible = disponible; }
+
+    public String getImagenUrl() { return imagen_url; }
+    public void setImagenUrl(String imagen_url) { this.imagen_url = imagen_url; }
 
     public List<LineaPedido> getLineas() { return lineas; }
     public void setLineas(List<LineaPedido> lineas) { this.lineas = lineas; }
