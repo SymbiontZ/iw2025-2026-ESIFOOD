@@ -1,4 +1,4 @@
-package es.uca.esifoodteam.pedidos;
+package es.uca.esifoodteam.pedidos.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;

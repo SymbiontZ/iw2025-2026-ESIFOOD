@@ -1,7 +1,13 @@
-package es.uca.esifoodteam.pedidos;
+package es.uca.esifoodteam.pedidos.services;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import es.uca.esifoodteam.pedidos.models.ActualizacionPedido;
+import es.uca.esifoodteam.pedidos.models.Pedido;
+import es.uca.esifoodteam.pedidos.repositories.ActualizacionPedidoRepository;
+import es.uca.esifoodteam.pedidos.repositories.PedidoRepository;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
