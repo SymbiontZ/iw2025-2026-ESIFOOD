@@ -9,7 +9,12 @@
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
+    <name>ESIFOOD</name>
+    <description>Food ordering system for UCA</description>
+    <url>https://github.com/symbiontz/iw2025-2026-ESIFOOD</url>
+
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>17</java.version>
         <vaadin.version>24.7.1</vaadin.version>
         <spring.boot.version>3.5.7</spring.boot.version>
@@ -58,17 +63,17 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-
-        <dependency>
-            <groupId>javax.persistence</groupId>
-            <artifactId>javax.persistence-api</artifactId>
-            <version>2.2</version>
-        </dependency>
-    
     </dependencies>
 
     <build>
         <plugins>
+            <!-- Maven Project Info Reports Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>3.9.0</version>
+            </plugin>
+
             <!-- Spring Boot plugin -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>

@@ -1,4 +1,4 @@
-package es.uca.esifoodteam.productos;
+package es.uca.esifoodteam.productos.models;
 
 import java.util.HashSet;
 import java.util.Set;

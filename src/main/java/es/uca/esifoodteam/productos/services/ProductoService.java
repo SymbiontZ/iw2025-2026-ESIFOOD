@@ -1,7 +1,10 @@
-package es.uca.esifoodteam.productos;
+package es.uca.esifoodteam.productos.services;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import es.uca.esifoodteam.productos.models.Producto;
+import es.uca.esifoodteam.productos.repositories.ProductoRepository;
 
 import java.util.List;
 import java.util.Optional;
