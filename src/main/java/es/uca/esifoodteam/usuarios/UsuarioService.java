@@ -16,9 +16,6 @@ public class UsuarioService {
     @Autowired
     private TipoUsuarioRepository tipoUsuarioRepository;
 
-    @Autowired
-    private EstadoUsuarioRepository estadoUsuarioRepository;
-
     // Listar todos
     public List<Usuario> findAll() {
         return usuarioRepository.findAll();
@@ -38,15 +35,12 @@ public class UsuarioService {
         if (usuarioRepository.existsByTelefono(usuario.getTelefono())) {
             throw new RuntimeException("Teléfono ya existe");
         }
-        if (usuarioRepository.existsByDni(usuario.getDni())) {
-            throw new RuntimeException("DNI ya existe");
-        }
         
         // Verificar que tipo y estado existen
         if (usuario.getTipo_id() == null || usuario.getTipo_id().getId() == null) {
             throw new RuntimeException("Tipo de usuario requerido");
         }
-        if (usuario.getEstado_id() == null || usuario.getEstado_id().getId() == null) {
+        if (usuario.getEsActivo() == null || usuario.getEsActivo() == null) {
             throw new RuntimeException("Estado requerido");
         }
         
@@ -68,9 +62,8 @@ public class UsuarioService {
         usuario.setEmail(usuarioDetails.getEmail());
         usuario.setTelefono(usuarioDetails.getTelefono());
         usuario.setDireccion(usuarioDetails.getDireccion());
-        usuario.setDni(usuarioDetails.getDni());
         usuario.setTipo_id(usuarioDetails.getTipo_id());
-        usuario.setEstado_id(usuarioDetails.getEstado_id());
+        usuario.setEsActivo(usuarioDetails.getEsActivo());
 
         return usuarioRepository.save(usuario);
     }
