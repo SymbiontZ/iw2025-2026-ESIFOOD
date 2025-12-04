@@ -17,11 +17,10 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     boolean existsByDni(String dni);
     
     // Búsquedas por relaciones
-    List<Usuario> findByTipo_idId(Long tipoId);
-    List<Usuario> findByEstado_idId(Long estadoId);
+    List<Usuario> findByTipo(Long tipoId);
+    List<Usuario> findByEstado(Long estadoId);
     
-    // Usuarios activos (para listas principales)
-    List<Usuario> findByEstado_idNombre(String estadoNombre);
+
     
     // Búsqueda por nombre (LIKE)
     List<Usuario> findByNombreContainingIgnoreCase(String nombre);

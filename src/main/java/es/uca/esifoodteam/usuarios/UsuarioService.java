@@ -85,11 +85,11 @@ public class UsuarioService {
 
     // Métodos útiles para Vaadin Grid
     public List<Usuario> findByTipo(Long tipoId) {
-        return usuarioRepository.findByTipo_idId(tipoId);
+        return usuarioRepository.findByTipo(tipoId);
     }
 
     public List<Usuario> findActivos() {
-        return usuarioRepository.findByEstado_idNombre("ACTIVO");
+        return usuarioRepository.findByEstado((long)1);
     }
 
     public List<Usuario> searchByNombre(String nombre) {
