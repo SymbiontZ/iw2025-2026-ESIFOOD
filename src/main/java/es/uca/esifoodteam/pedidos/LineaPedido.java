@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import java.math.BigDecimal;
 
-import es.uca.esifoodteam.productos.Producto;
+import es.uca.esifoodteam.productos.models.Producto;
 
 @Entity
 @Table(name = "linea_pedido")

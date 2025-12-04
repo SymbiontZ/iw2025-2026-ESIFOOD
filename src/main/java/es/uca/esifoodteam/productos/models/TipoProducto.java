@@ -1,4 +1,4 @@
-package es.uca.esifoodteam.productos;
+package es.uca.esifoodteam.productos.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

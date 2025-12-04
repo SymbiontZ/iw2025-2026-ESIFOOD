@@ -1,4 +1,4 @@
-package es.uca.esifoodteam.productos;
+package es.uca.esifoodteam.productos.models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
