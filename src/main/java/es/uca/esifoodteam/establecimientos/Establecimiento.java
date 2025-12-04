@@ -30,9 +30,6 @@ public class Establecimiento {
     @Column(nullable = true)
     private Boolean estaDisponible = true;
 
-    @OneToMany(mappedBy = "establecimiento", fetch = FetchType.LAZY)
-    private List<Producto> productos = new ArrayList<>();
-
     public Establecimiento() {}
 
     public Establecimiento(String nombre, String direccion){
@@ -51,9 +48,6 @@ public class Establecimiento {
 
     public Boolean getEstaDisponible() { return estaDisponible; }
     public void setEstaDisponible(Boolean estaDisponible) { this.estaDisponible = estaDisponible; }
-
-    public List<Producto> getProductos() { return productos; }
-    public void setProductos(List<Producto> productos) { this.productos = productos; }
 }
 
 
