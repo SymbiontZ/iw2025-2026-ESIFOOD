@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import es.uca.esifoodteam.locales.Local;
+import es.uca.esifoodteam.establecimientos.Local;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -24,10 +24,6 @@ public class Usuario {
     private TipoUsuario tipo;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "estado_id", nullable = false)
-    private EstadoUsuario estado;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "local_id")   // puede ser null si es cliente
     private Local localTrabajo;
 
@@ -42,20 +38,17 @@ public class Usuario {
     @Column(unique = true, nullable = false)
     private String email;
 
-    @NotBlank
     @Size(max = 20)
     @Column(length = 20, unique = true, nullable = false)
-    private String telefono;  
+    private String telefono = "";  
 
-    @NotBlank(message = "La dirección es obligatoria")
     @Size(max = 500)
     @Column(length = 500, nullable = false)
-    private String direccion;  
+    private String direccion = ""; 
 
     @NotBlank
-    @Size(max = 50)
-    @Column(unique = true, nullable = false)
-    private String dni;  
+    @Column(nullable = false)
+    private Boolean esActivo = true;
 
     @CreationTimestamp
     @Column(updatable = false)
@@ -68,15 +61,12 @@ public class Usuario {
     public Usuario() {}
 
     // Constructor útil
-    public Usuario(Long id, TipoUsuario tipo, EstadoUsuario estado, String nombre, String email, String telefono, String direccion, String dni, LocalDateTime fechaCreacion, LocalDateTime fechaActualizacion) {
+    public Usuario(Long id, TipoUsuario tipo, String nombre, String email, LocalDateTime fechaCreacion, LocalDateTime fechaActualizacion) {
         this.id = id;
         this.tipo = tipo;
-        this.estado = estado;
         this.nombre = nombre;
         this.email = email;
-        this.telefono = telefono;
-        this.direccion = direccion;
-        this.dni = dni;
+        this.esActivo = true;
         this.fechaCreacion = fechaCreacion;
         this.fechaActualizacion = fechaActualizacion;
     }
@@ -94,17 +84,14 @@ public class Usuario {
     public TipoUsuario getTipo_id() { return tipo; }
     public void setTipo_id(TipoUsuario tipo) { this.tipo = tipo; }
 
-    public EstadoUsuario getEstado_id() { return estado; }
-    public void setEstado_id(EstadoUsuario estado) { this.estado = estado; }
+    public Boolean getEsActivo() { return esActivo; }
+    public void setEsActivo(Boolean esActivo) { this.esActivo = esActivo; }
 
     public String getTelefono() { return telefono; }
     public void setTelefono(String telefono) { this.telefono = telefono; }
 
     public String getDireccion() { return direccion; }
     public void setDireccion(String direccion) { this.direccion = direccion; }
-
-    public String getDni() { return dni; }
-    public void setDni(String dni) { this.dni = dni; }
 
     public LocalDateTime getFechaCreacion() { return fechaCreacion; }
     public void setFechaCreacion(LocalDateTime fechaCreacion) { this.fechaCreacion = fechaCreacion; }
