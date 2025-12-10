@@ -34,6 +34,12 @@ public class LineaPedido {
 
     public LineaPedido() {}
 
+    public LineaPedido(int cantidad, BigDecimal precio_u) {
+        this.cantidad = cantidad;
+        this.precio_u = precio_u;
+        this.subtotal = precio_u.multiply(BigDecimal.valueOf(cantidad));
+    }
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

@@ -14,8 +14,9 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     boolean existsByEmail(String email);
     boolean existsByTelefono(String telefono);
     
-    // Búsquedas por relaciones (por ID)
-    List<Usuario> findByTipoId(Long tipoId);
+    // Búsquedas por relaciones
+    List<Usuario> findByTipo(TipoUsuario tipo);
+    List<Usuario> findByEsActivo(Boolean esActivo);
     
     // Búsquedas por relaciones (por nombre)
     List<Usuario> findByTipoNombre(String tipoNombre);

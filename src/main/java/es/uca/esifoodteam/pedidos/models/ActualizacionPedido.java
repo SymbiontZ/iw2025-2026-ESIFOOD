@@ -14,8 +14,8 @@ public class ActualizacionPedido {
     @Column(nullable = false)
     private LocalDateTime fechaHora;
 
-    @Column(length = 500)
-    private String comentario;
+    @Column(length = 500, nullable = true)
+    private String comentario = "";
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pedido_id", nullable = false)
@@ -29,9 +29,8 @@ public class ActualizacionPedido {
     public ActualizacionPedido() {}
 
     // Constructor con parámetros
-    public ActualizacionPedido(LocalDateTime fechaHora, String comentario, Pedido pedido) {
+    public ActualizacionPedido(LocalDateTime fechaHora, Pedido pedido) {
         this.fechaHora = fechaHora;
-        this.comentario = comentario;
         this.pedido = pedido;
     }
 

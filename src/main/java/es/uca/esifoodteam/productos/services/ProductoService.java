@@ -31,10 +31,6 @@ public class ProductoService {
         return productoRepository.findByNombreContainingIgnoreCase(filtro);
     }
 
-    public List<Producto> findByLocal(Long localId) {
-        return productoRepository.findByLocalId(localId);
-    }
-
     public List<Producto> findDisponibles() {
         return productoRepository.findByDisponibleTrue();
     }
