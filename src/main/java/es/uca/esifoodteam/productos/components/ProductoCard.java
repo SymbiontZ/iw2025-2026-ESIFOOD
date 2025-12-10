@@ -1,4 +1,4 @@
-package es.uca.esifoodteam.components.productos;
+package es.uca.esifoodteam.productos.components;
 
 import es.uca.esifoodteam.productos.models.Producto;
 

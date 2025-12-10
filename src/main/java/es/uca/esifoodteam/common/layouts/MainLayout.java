@@ -1,4 +1,4 @@
-package es.uca.esifoodteam.layouts;
+package es.uca.esifoodteam.common.layouts;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.applayout.AppLayout;
