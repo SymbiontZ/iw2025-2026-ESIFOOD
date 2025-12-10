@@ -1,0 +1,15 @@
+@import './producto.components.css';
+
+.navbar {
+    height: 60px !important;
+    background-color: #344f1f !important;
+}
+
+.footer {
+    background-color: #F2EAD3 !important;
+    border-top: 1px solid #ddd !important;
+}
+
+.content-area {
+    padding: 20px;
+}   
