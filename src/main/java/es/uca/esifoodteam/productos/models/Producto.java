@@ -1,17 +1,22 @@
 package es.uca.esifoodteam.productos.models;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-
-import es.uca.esifoodteam.establecimientos.Establecimiento;
-import es.uca.esifoodteam.pedidos.models.LineaPedido;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "producto")
@@ -31,8 +36,13 @@ public class Producto {
     )
     private Set<Ingrediente> ingredientes = new HashSet<>();
 
-    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<LineaPedido> lineas = new ArrayList<>();
+    @ManyToMany
+    @JoinTable(
+        name = "producto_tipo_producto",
+        joinColumns = @JoinColumn(name = "producto_id"),
+        inverseJoinColumns = @JoinColumn(name = "tipo_producto_id")
+    )
+    private Set<TipoProducto> tipos = new HashSet<>();
 
     @NotBlank
     @Size(max = 100)
@@ -74,8 +84,8 @@ public class Producto {
     public String getImagenUrl() { return imagen_url; }
     public void setImagenUrl(String imagen_url) { this.imagen_url = imagen_url; }
 
-    public List<LineaPedido> getLineas() { return lineas; }
-    public void setLineas(List<LineaPedido> lineas) { this.lineas = lineas; }
+    public Set<TipoProducto> getTipos() { return tipos; }
+    public void setTipos(Set<TipoProducto> tipos) { this.tipos = tipos; }
 
     public Set<Ingrediente> getIngredientes() { return ingredientes; }
     public void setIngredientes(Set<Ingrediente> ingredientes) { this.ingredientes = ingredientes; }
