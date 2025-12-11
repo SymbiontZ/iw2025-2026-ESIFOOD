@@ -8,6 +8,7 @@ import com.vaadin.flow.component.orderedlayout.*;
 
 import es.uca.esifoodteam.common.components.Navbar;
 
+@CssImport("./styles/producto-components.css")
 @CssImport("./styles/style.css")
 public class MainLayout extends AppLayout {
     private VerticalLayout contentArea;
@@ -26,7 +27,7 @@ public class MainLayout extends AppLayout {
         
         contentArea = new VerticalLayout();
         contentArea.setSizeFull();
-        contentArea.addClassName("content-area");
+        contentArea.addClassName("content");
         
         wrapper.add(contentArea);
         wrapper.add(createFooter());

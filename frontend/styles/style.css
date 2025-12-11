@@ -1,15 +1,50 @@
-@import './producto.components.css';
+@import './producto-components.css';
 
 .navbar {
-    height: 60px !important;
+    height: 70px !important;
     background-color: #344f1f !important;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    text-transform: uppercase;
 }
+
+.navbar-container {
+    background-color: green;
+    margin: 30px;
+    max-width: 30vw;
+}
+
+.navbar-title {
+    color: white;
+    font-weight: 700;
+    font-size: 32px;
+}
+
+.navbar-title:hover {
+    color: #F2EAD3 ;
+    text-decoration: none;
+    transform: scale(1.1);
+    transition: 200ms;
+}
+
+.navbar-link {
+    color: white;
+    font-weight: 500;
+    font-size: 24px;
+    margin-left: 20px;
+}
+
 
 .footer {
-    background-color: #F2EAD3 !important;
-    border-top: 1px solid #ddd !important;
+    background-color: #F2EAD3 ;
+    border-top: 1px solid #ddd ;
 }
 
-.content-area {
+.content {
+    background-color: #F9F5F0;
     padding: 20px;
+
 }   
