@@ -1,20 +1,28 @@
-package es.uca.esifoodteam.usuarios;
+package es.uca.esifoodteam.usuarios.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import es.uca.esifoodteam.usuarios.models.TipoUsuario;
+import es.uca.esifoodteam.usuarios.models.Usuario;
+import es.uca.esifoodteam.usuarios.repositories.TipoUsuarioRepository;
+import es.uca.esifoodteam.usuarios.repositories.UsuarioRepository;
+
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional
+
 public class UsuarioService {
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+    private final UsuarioRepository usuarioRepository;
+    private final TipoUsuarioService tipoUsuarioService;
 
-    @Autowired
-    private TipoUsuarioRepository tipoUsuarioRepository;
+    public UsuarioService(UsuarioRepository usuarioRepository, TipoUsuarioService tipoUsuarioService) {
+        this.usuarioRepository = usuarioRepository;
+        this.tipoUsuarioService = tipoUsuarioService;
+    }
 
     // Listar todos
     public List<Usuario> findAll() {
@@ -27,6 +35,7 @@ public class UsuarioService {
     }
 
     // Crear usuario (con validaciones)
+    @Transactional
     public Usuario create(Usuario usuario) {
         // Verificar duplicados
         if (usuarioRepository.existsByEmail(usuario.getEmail())) {
@@ -48,6 +57,7 @@ public class UsuarioService {
     }
 
     // Actualizar usuario
+    @Transactional
     public Usuario update(Long id, Usuario usuarioDetails) {
         Usuario usuario = usuarioRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
@@ -69,6 +79,7 @@ public class UsuarioService {
     }
 
     // Eliminar usuario
+    @Transactional
     public void delete(Long id) {
         if (!usuarioRepository.existsById(id)) {
             throw new RuntimeException("Usuario no encontrado");

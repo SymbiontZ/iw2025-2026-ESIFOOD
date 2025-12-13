@@ -1,4 +1,4 @@
-package es.uca.esifoodteam.views;
+package es.uca.esifoodteam.usuarios.views;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;

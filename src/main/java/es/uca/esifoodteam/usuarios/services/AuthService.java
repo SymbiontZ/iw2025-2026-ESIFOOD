@@ -1,4 +1,4 @@
-package es.uca.esifoodteam.usuarios;
+package es.uca.esifoodteam.usuarios.services;
 
 import java.util.Optional;
 
@@ -10,6 +10,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import es.uca.esifoodteam.usuarios.models.Usuario;
+import es.uca.esifoodteam.usuarios.repositories.UsuarioRepository;
 
 @Service
 public class AuthService implements UserDetailsService {

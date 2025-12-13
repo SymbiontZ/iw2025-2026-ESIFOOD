@@ -1,4 +1,4 @@
-package es.uca.esifoodteam.usuarios;
+package es.uca.esifoodteam.usuarios.models;
 
 import java.time.LocalDateTime;
 import java.util.Collection;

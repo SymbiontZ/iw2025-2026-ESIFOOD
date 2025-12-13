@@ -1,4 +1,4 @@
-package es.uca.esifoodteam.views;
+package es.uca.esifoodteam.usuarios.views;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -12,10 +12,10 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
-import es.uca.esifoodteam.usuarios.AuthService;
-import es.uca.esifoodteam.usuarios.TipoUsuario;
-import es.uca.esifoodteam.usuarios.TipoUsuarioRepository;
-import es.uca.esifoodteam.usuarios.Usuario;
+import es.uca.esifoodteam.usuarios.models.TipoUsuario;
+import es.uca.esifoodteam.usuarios.models.Usuario;
+import es.uca.esifoodteam.usuarios.repositories.TipoUsuarioRepository;
+import es.uca.esifoodteam.usuarios.services.AuthService;
 
 @Route("registro")
 @PageTitle("Registro | ESIFOOD")

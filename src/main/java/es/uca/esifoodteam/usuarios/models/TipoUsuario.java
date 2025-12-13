@@ -1,4 +1,4 @@
-package es.uca.esifoodteam.usuarios;
+package es.uca.esifoodteam.usuarios.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;

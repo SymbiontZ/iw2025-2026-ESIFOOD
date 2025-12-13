@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import es.uca.esifoodteam.establecimientos.Establecimiento;
-import es.uca.esifoodteam.usuarios.Usuario;
+import es.uca.esifoodteam.usuarios.models.Usuario;
 
 @Entity
 @Table(name = "pedido")

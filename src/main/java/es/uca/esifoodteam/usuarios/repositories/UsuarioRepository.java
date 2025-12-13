@@ -1,10 +1,13 @@
-package es.uca.esifoodteam.usuarios;
+package es.uca.esifoodteam.usuarios.repositories;
 
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import es.uca.esifoodteam.usuarios.models.TipoUsuario;
+import es.uca.esifoodteam.usuarios.models.Usuario;
 
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {

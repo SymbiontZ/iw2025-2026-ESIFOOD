@@ -1,11 +1,11 @@
 package es.uca.esifoodteam.common.config;
 
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.*;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
-import es.uca.esifoodteam.usuarios.AuthService;
+import es.uca.esifoodteam.usuarios.services.AuthService;
 
 @Configuration
 @EnableWebSecurity
@@ -17,7 +17,8 @@ public class SecurityConfig {
         this.authService = authService;
     }
 
-    @org.springframework.context.annotation.Bean
+
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(authz -> authz
