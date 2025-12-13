@@ -5,10 +5,13 @@ import org.springframework.stereotype.Repository;
 
 import es.uca.esifoodteam.productos.models.TipoProducto;
 
-import java.util.Optional;
+import java.util.*;
+
 
 @Repository
 public interface TipoProductoRepository extends JpaRepository<TipoProducto, Long> {
 
     Optional<TipoProducto> findByNombre(String nombre);
+
+    List<TipoProducto> findAll();
 }

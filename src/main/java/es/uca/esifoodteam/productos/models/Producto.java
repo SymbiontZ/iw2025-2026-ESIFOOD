@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Set;
 
 
-import es.uca.esifoodteam.establecimientos.Establecimiento;
 import es.uca.esifoodteam.pedidos.models.LineaPedido;
 
 @Entity
