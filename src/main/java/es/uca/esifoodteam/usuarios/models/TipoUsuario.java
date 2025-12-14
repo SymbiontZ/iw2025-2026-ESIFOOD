@@ -14,6 +14,7 @@ public class TipoUsuario {
     @NotBlank
     @Column(nullable = false)
     private String nombre;
+    
 
 
     // Constructor vacío

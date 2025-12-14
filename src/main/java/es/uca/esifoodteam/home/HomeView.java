@@ -6,8 +6,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
 import es.uca.esifoodteam.common.layouts.MainLayout;
-import es.uca.esifoodteam.productos.components.ProductoCarrusel;
-import es.uca.esifoodteam.productos.models.Producto;
+import es.uca.esifoodteam.productos.components.ProductoGrid;
 import es.uca.esifoodteam.productos.services.ProductoService;
 
 @Route("")
@@ -18,13 +17,7 @@ public class HomeView extends MainLayout {
     public HomeView(ProductoService productoService) {
         add(new H1("Bienvenido a EsiFood"));
         
-        ProductoCarrusel carrusel = new ProductoCarrusel();
-        add(carrusel);
-
-
-        for (Producto producto : productoService.findDisponibles()) {
-            carrusel.addProducto(producto);
-            
-        }
+        ProductoGrid grid = new ProductoGrid(productoService.findDisponibles());
+        add(grid);            
     }
 }

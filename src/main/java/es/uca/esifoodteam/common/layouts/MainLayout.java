@@ -43,6 +43,14 @@ public class MainLayout extends AppLayout {
         contentArea.add(component);
     }
 
+    /**
+     * Limpia el área de contenido principal.
+     */
+    public void clearContent() {
+        System.out.println("Limpiando contenido");
+        contentArea.removeAll();
+    }
+
     private HorizontalLayout createFooter() {
         HorizontalLayout footer = new HorizontalLayout();
         footer.setWidthFull();

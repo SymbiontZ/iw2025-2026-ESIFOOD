@@ -12,7 +12,6 @@
 }
 
 .navbar-container {
-    background-color: green;
     margin: 30px;
     max-width: 30vw;
 }
@@ -48,3 +47,10 @@
     padding: 20px;
 
 }   
+
+.image-expand {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}

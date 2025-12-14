@@ -3,7 +3,7 @@ package es.uca.esifoodteam.productos.services;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import es.uca.esifoodteam.productos.models.Producto;
+import es.uca.esifoodteam.productos.models.*;
 import es.uca.esifoodteam.productos.repositories.ProductoRepository;
 
 import java.util.List;
@@ -25,6 +25,10 @@ public class ProductoService {
 
     public Optional<Producto> findById(Long id) {
         return productoRepository.findById(id);
+    }
+    @Transactional(readOnly = true)
+    public List<Producto> findByTipoProducto(TipoProducto tipoProducto) {
+        return productoRepository.findByTiposContaining(tipoProducto);
     }
 
     public List<Producto> buscarPorNombre(String filtro) {

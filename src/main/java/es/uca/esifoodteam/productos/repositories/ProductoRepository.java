@@ -3,7 +3,7 @@ package es.uca.esifoodteam.productos.repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import es.uca.esifoodteam.productos.models.Producto;
+import es.uca.esifoodteam.productos.models.*;
 
 import java.util.List;
 
@@ -16,6 +16,6 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
     // Solo disponibles
     List<Producto> findByDisponibleTrue();
 
-    // Por tipo (solo aplicable a Simple, pero accesible por la jerarquía)
-    List<Producto> findByClass(Class<? extends Producto> tipo);
+    // Por tipo (busca en la colección tipos)
+    List<Producto> findByTiposContaining(TipoProducto tipoProducto);
 }

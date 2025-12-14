@@ -18,7 +18,7 @@ public class Navbar extends Header{
         }
 
         //COLUMNA IZQUIERDA - OPCIONES
-        Anchor carta = new Anchor("/menu", "menús");
+        Anchor carta = new Anchor("/productos", "menús");
         carta.setClassName("navbar-link");
         navbarContainers[0].add(carta);
 

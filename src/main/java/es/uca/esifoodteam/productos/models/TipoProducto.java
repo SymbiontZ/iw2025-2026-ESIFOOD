@@ -21,11 +21,11 @@ public class TipoProducto {
     @ManyToMany(mappedBy = "tipos")
     private Set<Producto> productos = new HashSet<>();
 
-    @Column(nullable = false, unique = true, length = 50)
+    @Column(nullable = false, length = 50)
     private String nombre;
 
-    @Column(nullable = true)
-    private String imagen;
+    @Column(name = "nombre_id", nullable = true, length = 20, unique = true)
+    private String nombreId;
 
     public TipoProducto() {}
 
@@ -35,8 +35,8 @@ public class TipoProducto {
     public String getNombre() { return nombre; }
     public void setNombre(String nombre) { this.nombre = nombre; }
 
-    public String getImagen() { return imagen; }
-    public void setImagen(String imagen) { this.imagen = imagen; }
+    public String getNombreId() { return nombreId; }
+    public void setNombreId(String nombreId) { this.nombreId = nombreId; }
 
     public Set<Producto> getProductos() { return productos; }
     public void setProductos(Set<Producto> productos) { this.productos = productos; }

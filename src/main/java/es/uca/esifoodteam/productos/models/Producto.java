@@ -7,9 +7,6 @@ import java.util.Set;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
-import es.uca.esifoodteam.establecimientos.Establecimiento;
-import es.uca.esifoodteam.pedidos.models.LineaPedido;
-
 @Entity
 @Table(name = "producto")
 @Inheritance(strategy = InheritanceType.JOINED)

@@ -28,11 +28,11 @@ injectGlobalCss($cssFromFile_1.toString(), 'CSSImport end', document);
 
 const loadOnDemand = (key) => {
   const pending = [];
-  if (key === '3ea9d7a5c9859de2b218cb1e0e56af5ce6ee3fe08ecc53b848d7e55611503144') {
-    pending.push(import('./chunks/chunk-f803df643c07aa37eee57a440b68a91abb3cd3408a72bcc573024c04162131e4.js'));
-  }
-  if (key === '802ca2e29509e19b67ecd6e89bff3ae829a0ba58867cf8567fb815c6d09575f7') {
+  if (key === '793b7d784e01d39cfeedd3563022f08f60a27a3113a4f4b114eb5e000bdff5e5') {
     pending.push(import('./chunks/chunk-193f5ed0e3315de7f95341217ee386f2e46945767240f7dbc7946fa66f36d335.js'));
+  }
+  if (key === '3ea9d7a5c9859de2b218cb1e0e56af5ce6ee3fe08ecc53b848d7e55611503144') {
+    pending.push(import('./chunks/chunk-961f59352a6dd7e49b1bff9e95568c58b60b62ad96dc5dbf724200740920326e.js'));
   }
   return Promise.all(pending);
 }

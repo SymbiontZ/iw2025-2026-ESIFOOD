@@ -30,6 +30,11 @@ public class TipoProductoService {
     public Optional<TipoProducto> findByNombre(String nombre) {
         return tipoProductoRepository.findByNombre(nombre);
     }
+    
+    public Optional<TipoProducto> findByNombreId(String nombreId) {
+        return tipoProductoRepository.findByNombreId(nombreId);
+    }
+
 
     public TipoProducto save(TipoProducto tipoProducto) {
         return tipoProductoRepository.save(tipoProducto);
