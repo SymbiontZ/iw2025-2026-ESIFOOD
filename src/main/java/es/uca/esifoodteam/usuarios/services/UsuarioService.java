@@ -1,16 +1,14 @@
 package es.uca.esifoodteam.usuarios.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import es.uca.esifoodteam.usuarios.models.TipoUsuario;
 import es.uca.esifoodteam.usuarios.models.Usuario;
-import es.uca.esifoodteam.usuarios.repositories.TipoUsuarioRepository;
 import es.uca.esifoodteam.usuarios.repositories.UsuarioRepository;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 
@@ -84,7 +82,7 @@ public class UsuarioService {
         if (!usuarioRepository.existsById(id)) {
             throw new RuntimeException("Usuario no encontrado");
         }
-        usuarioRepository.deleteById(id);
+        usuarioRepository.findById(id).ifPresent(usuario -> usuario.setEsActivo(false));
     }
 
     // Métodos útiles para Vaadin Grid

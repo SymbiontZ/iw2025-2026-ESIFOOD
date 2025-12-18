@@ -1,11 +1,13 @@
 package es.uca.esifoodteam.usuarios.models;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -69,26 +71,33 @@ public class Usuario {
     @Column(nullable = false)
     private Boolean esActivo = true;
 
-    @CreationTimestamp
-    @Column(updatable = false)
-    private LocalDateTime fechaCreacion;
+    @CreatedDate
+    @Column(name = "created_date", updatable = false, nullable = false)
+    private Instant createdDate;  
 
-    @UpdateTimestamp
-    private LocalDateTime fechaActualizacion;
+    @LastModifiedDate
+    @Column(name = "modified_date")
+    private Instant modifiedDate;  
+
+    @CreatedBy
+    @Column(name = "created_by", updatable = false, length = 50)  
+    private String createdBy;
+
+    @LastModifiedBy
+    @Column(name = "modified_by", length = 50)  
+    private String modifiedBy;
 
     // Constructor vacío (requerido por JPA)
     public Usuario() {}
 
     // Constructor útil
-    public Usuario(Long id, TipoUsuario tipo, String nombre, String email, String pass, LocalDateTime fechaCreacion, LocalDateTime fechaActualizacion) {
+    public Usuario(Long id, TipoUsuario tipo, String nombre, String email, String pass) {
         this.id = id;
         this.tipo = tipo;
         this.nombre = nombre;
         this.email = email;
         this.pass = pass;
         this.esActivo = true;
-        this.fechaCreacion = fechaCreacion;
-        this.fechaActualizacion = fechaActualizacion;
     }
 
     // Spring Security
@@ -128,12 +137,18 @@ public class Usuario {
     public String getDireccion() { return direccion; }
     public void setDireccion(String direccion) { this.direccion = direccion; }
 
-    public LocalDateTime getFechaCreacion() { return fechaCreacion; }
-    public void setFechaCreacion(LocalDateTime fechaCreacion) { this.fechaCreacion = fechaCreacion; }
-
-    public LocalDateTime getFechaActualizacion() { return fechaActualizacion; }
-    public void setFechaActualizacion(LocalDateTime fechaActualizacion) { this.fechaActualizacion = fechaActualizacion; }
-
     public Establecimiento getLocalTrabajo() { return establecimientoTrabajo; }
     public void setLocalTrabajo(Establecimiento establecimientoTrabajo) { this.establecimientoTrabajo = establecimientoTrabajo; }
+
+    public Instant getCreatedDate() { return createdDate; }
+    public void setCreatedDate(Instant createdDate) { this.createdDate = createdDate; }
+
+    public Instant getModifiedDate() { return modifiedDate; }  
+    public void setModifiedDate(Instant modifiedDate) { this.modifiedDate = modifiedDate; }
+
+    public String getCreatedBy() { return createdBy; }
+    public void setCreatedBy(String createdBy) { this.createdBy = createdBy; }
+
+    public String getModifiedBy() { return modifiedBy; }
+    public void setModifiedBy(String modifiedBy) { this.modifiedBy = modifiedBy; }
 }
