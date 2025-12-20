@@ -1,5 +1,6 @@
 package es.uca.esifoodteam.productos.models;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,7 +26,7 @@ public class Ingrediente {
     private Integer stock;
 
     @Column(nullable = false)
-    private double precio;
+    private BigDecimal precio;
 
     @ManyToMany(mappedBy = "ingredientes")
     private Set<Producto> productos = new HashSet<>();
@@ -44,6 +45,6 @@ public class Ingrediente {
     public Set<Producto> getProductos() { return productos; }
     public void setProductos(Set<Producto> productos) { this.productos = productos; }
 
-    public double getPrecio() { return precio; }
-    public void setPrecio(double precio) { this.precio = precio; }
+    public BigDecimal getPrecio() { return precio; }
+    public void setPrecio(BigDecimal precio) { this.precio = precio; }
 }
