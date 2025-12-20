@@ -5,11 +5,11 @@ import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "ingrediente")
@@ -23,6 +23,9 @@ public class Ingrediente {
 
     @Column(nullable = false)
     private Integer stock;
+
+    @Column(nullable = false)
+    private double precio;
 
     @ManyToMany(mappedBy = "ingredientes")
     private Set<Producto> productos = new HashSet<>();
@@ -41,4 +44,6 @@ public class Ingrediente {
     public Set<Producto> getProductos() { return productos; }
     public void setProductos(Set<Producto> productos) { this.productos = productos; }
 
+    public double getPrecio() { return precio; }
+    public void setPrecio(double precio) { this.precio = precio; }
 }

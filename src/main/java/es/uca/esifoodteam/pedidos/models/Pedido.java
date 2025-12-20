@@ -10,12 +10,14 @@ import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import es.uca.esifoodteam.establecimientos.Establecimiento;
 import es.uca.esifoodteam.usuarios.models.Usuario;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,6 +29,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "pedido")
+@EntityListeners(AuditingEntityListener.class)
 public class Pedido {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
