@@ -73,25 +73,6 @@
 
     <build>
         <plugins>
-            <!-- OpenRewrite Maven Plugin -->
-            <plugin>
-                <groupId>org.openrewrite.maven</groupId>
-                <artifactId>rewrite-maven-plugin</artifactId>
-                <version>5.47.3</version>
-                <configuration>
-                    <activeRecipes>
-                        <recipe>com.example.UpgradeToJava21</recipe>
-                    </activeRecipes>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.openrewrite.recipe</groupId>
-                        <artifactId>rewrite-migrate-java</artifactId>
-                        <version>2.31.1</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
-
             <!-- Maven Project Info Reports Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
