@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import es.uca.esifoodteam.establecimientos.Establecimiento;
 import es.uca.esifoodteam.usuarios.models.TipoUsuario;
 import es.uca.esifoodteam.usuarios.models.Usuario;
 
@@ -19,6 +20,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     Optional<Usuario> findByTelefono(String telefono);
     boolean existsByEmail(String email);
     boolean existsByTelefono(String telefono);
+    boolean existsByTelefonoAndIdNot(String telefono, Long id);
+    boolean existsByEmailAndIdNot(String email, Long id);
     
     // Búsquedas por relaciones
     List<Usuario> findByTipo(TipoUsuario tipo);
@@ -27,9 +30,10 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     // Búsquedas por relaciones (por nombre)
     List<Usuario> findByTipoNombre(String tipoNombre);
 
+    // ✅ CORREGIDO: Usa 'establecimientoTrabajo' (nombre JPA correcto)
+    List<Usuario> findByEstablecimientoTrabajo(Establecimiento establecimiento);
+    List<Usuario> findByEstablecimientoTrabajoAndEsActivo(Establecimiento establecimiento, Boolean activo);
     
     // Búsqueda por nombre (LIKE)
     List<Usuario> findByNombreContainingIgnoreCase(String nombre);
-
-    
 }

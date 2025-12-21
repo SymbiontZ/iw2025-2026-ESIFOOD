@@ -6,98 +6,70 @@
 
 ```mermaid
 classDiagram
-        direction LR
     
         %% ==== DEFINICIÓN DE CLASES ====
     
         %% --- Usuarios ---
         class Usuario {
-                Long id <<PK>>
-                Long tipo_id <<FK>>
-                Long estado_id <<FK>>
-                Long local_id <<FK>>
-                String nombre [NOT NULL, len 1..100]
-                String email [NOT NULL, UNIQUE, formato email]
-                String telefono [NOT NULL, UNIQUE, len 1..20]
-                String dni [NOT NULL, UNIQUE, len 1..50]
+                String nombre 
+                String email
+                String telefono 
+                String direccion
+                Boolean esActivo
         }
         class TipoUsuario {
-                Long id <<PK>>
-                String nombre [NOT NULL, UNIQUE]
+                String nombre 
         }
     
         class EstadoUsuario {
-                Long id <<PK>>
-                String nombre [NOT NULL, UNIQUE]
+                String nombre 
         }
     
         %% --- Pedidos ---
         class Pedido {
-                Long id <<PK>>
-                Long estado_id <<FK>>
-                Long usuario_id <<FK>>
-                Long local_id <<FK>>
-                List<ActualizacionPedido> actualizaciones
-                List<LineaPedido> lineas
-                BigDecimal precio [NOT NULL, >= 0]
-                DateTime fechaHora [NOT NULL]
-                String observaciones [len 0..500]
+                BigDecimal precio 
+                LocalDateTime fechaHora 
+                String observaciones 
         }
         class EstadoPedido {
-                Long id <<PK>>
-                String nombre [NOT NULL, UNIQUE]
+                String nombre 
         }
         class ActualizacionPedido {
-                Long id <<PK>>
-                Long pedido_id <<FK>>
-                Long estado_id <<FK>>
-                DateTime fechaHora [NOT NULL]
-                String comentario [opc., len 0..500]
+                DateTime fechaHora 
+                String comentario 
         }
         class LineaPedido {
-                Long id <<PK>>
-                Long pedido_id <<FK>>
-                Long producto_id <<FK>>
-                BigDecimal precio_u [NOT NULL, > 0]
-                BigDecimal subtotal [NOT NULL, > 0]
-                int cantidad [NOT NULL, >= 1]
+                BigDecimal precio_u 
+                BigDecimal subtotal 
+                Integer cantidad 
         }
     
         %% --- Productos y Menús ---
         class Producto {
-                Long id <<PK>>
-                Long local_id <<FK>>
-                Set<Ingrediente> ingredientes
-                List<LineaPedido> lineas
-                String nombre [NOT NULL, len 1..100]
-                String descripcion [len 0..500]
-                BigDecimal precio [NOT NULL, >= 0]
-                boolean disponible [NOT NULL]
+                String nombre 
+                String descripcion
+                BigDecimal precio 
+                boolean disponible
+                String imagen_url
         }
         class Simple {
-                Long tipo_producto_id
         }
         class Menu {
-                Set<Simple> productos
         }
         class TipoProducto {
-                Long id <<PK>>
-                String nombre [NOT NULL, UNIQUE]
+                String nombre 
         }
         class Ingrediente {
-                Long id <<PK>>
-                Set<Producto> productos
-                String nombre [NOT NULL, UNIQUE]
-                int stock [NOT NULL, >= 0]
+                String nombre 
+                Integer stock 
+                BigDecimal precio
         }
     
-        %% --- Locales ---
-        class Local {
-                Long id <<PK>>
-                List<Producto> productos
-                String nombre [NOT NULL, UNIQUE]
-                String direccion [NOT NULL, len 1..200]
-                boolean estaAbierto [NOT NULL]
+        %% --- Establecimientos ---
+        class Establecimiento {
+                String nombre 
+                String direccion 
+                boolean estaDisponible
         }
     
         %% ==== RELACIONES ====
@@ -107,14 +79,13 @@ classDiagram
         Usuario "*" -- "1" EstadoUsuario : estado
         Usuario "1" -- "*" Pedido : realiza
         %% Si el Usuario incluye clientes y empleados, convendría que fuese opcional:
-        Usuario "*" -- "0..1" Local : trabaja_en
+        Usuario "*" -- "0..1" Establecimiento : trabaja_en
     
         %% --- Pedido ---
         Pedido "1" -- "*" LineaPedido : contiene
-        Pedido "*" -- "1" Local : pertenece_a
+        Pedido "*" -- "1" Establecimiento : pertenece_a
         Pedido "1" -- "*" ActualizacionPedido : tiene_historial
         EstadoPedido "1" -- "*" ActualizacionPedido : aparece_en
-        note for ActualizacionPedido "Historial de cambios de estado de un Pedido"
     
         %% --- Productos ---
         Producto <|-- Menu

@@ -1,10 +1,18 @@
 package es.uca.esifoodteam.pedidos.models;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
 import java.math.BigDecimal;
 
 import es.uca.esifoodteam.productos.models.Producto;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.Min;
 
 @Entity
 @Table(name = "linea_pedido")
@@ -24,7 +32,7 @@ public class LineaPedido {
 
     @Min(1)
     @Column(nullable = false)
-    private int cantidad;
+    private Integer cantidad;
 
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal precio_u;
@@ -34,7 +42,7 @@ public class LineaPedido {
 
     public LineaPedido() {}
 
-    public LineaPedido(int cantidad, BigDecimal precio_u) {
+    public LineaPedido(Integer cantidad, BigDecimal precio_u) {
         this.cantidad = cantidad;
         this.precio_u = precio_u;
         this.subtotal = precio_u.multiply(BigDecimal.valueOf(cantidad));
@@ -49,8 +57,8 @@ public class LineaPedido {
     public Producto getProducto() { return producto; }
     public void setProducto(Producto producto) { this.producto = producto; }
 
-    public int getCantidad() { return cantidad; }
-    public void setCantidad(int cantidad) { this.cantidad = cantidad; }
+    public Integer getCantidad() { return cantidad; }
+    public void setCantidad(Integer cantidad) { this.cantidad = cantidad; }
 
     public BigDecimal getPrecioUnitario() { return precio_u; }
     public void setPrecioUnitario(BigDecimal precio_u) { this.precio_u = precio_u; }
