@@ -42,8 +42,8 @@ public class Usuario {
     @JoinColumn(name = "tipo_id", nullable = false)
     private TipoUsuario tipo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "local_id")   // puede ser null si es cliente
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "establecimiento_id")   // puede ser null si es cliente
     private Establecimiento establecimientoTrabajo;
 
     @NotBlank(message = "El nombre es obligatorio")
@@ -140,8 +140,8 @@ public class Usuario {
     public String getDireccion() { return direccion; }
     public void setDireccion(String direccion) { this.direccion = direccion; }
 
-    public Establecimiento getLocalTrabajo() { return establecimientoTrabajo; }
-    public void setLocalTrabajo(Establecimiento establecimientoTrabajo) { this.establecimientoTrabajo = establecimientoTrabajo; }
+    public Establecimiento getEstablecimientoTrabajo() { return establecimientoTrabajo; }
+    public void setEstablecimientoTrabajo(Establecimiento establecimientoTrabajo) { this.establecimientoTrabajo = establecimientoTrabajo; }
 
     public Instant getCreatedDate() { return createdDate; }
     public void setCreatedDate(Instant createdDate) { this.createdDate = createdDate; }

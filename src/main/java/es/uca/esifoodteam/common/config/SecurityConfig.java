@@ -24,6 +24,7 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(authz -> authz
                 .requestMatchers(SecurityPaths.PUBLIC_PATHS).permitAll()
+                .requestMatchers("/admin/**").hasRole("ADMINISTRADOR")
                 .requestMatchers(SecurityPaths.PROTECTED_PATHS).authenticated()
                 .anyRequest().authenticated()
             )
