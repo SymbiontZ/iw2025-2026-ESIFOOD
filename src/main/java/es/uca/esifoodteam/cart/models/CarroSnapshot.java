@@ -5,7 +5,9 @@ import java.util.*;
 public class CarroSnapshot {
     private List<ItemCarroSnapshot> items;
 
-    public CarroSnapshot() {}
+    public CarroSnapshot() {
+        this.items = new ArrayList<>();
+    }
 
     public List<ItemCarroSnapshot> getItems() {
         return items;

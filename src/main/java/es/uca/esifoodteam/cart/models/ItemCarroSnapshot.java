@@ -3,17 +3,17 @@ package es.uca.esifoodteam.cart.models;
 import java.util.*;
 
 public class ItemCarroSnapshot {
-    private String productoId;
+    private Long productoId;
     private int cantidad;
     private Map<String, Integer> base;
     private Map<String, Integer> extra;
 
     public ItemCarroSnapshot() {}
 
-    public String getProductoId() {
+    public Long getProductoId() {
         return productoId;
     }
-    public void setProductoId(String productoId) {
+    public void setProductoId(Long productoId) {
         this.productoId = productoId;
     }
 

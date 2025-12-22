@@ -2,35 +2,54 @@ package es.uca.esifoodteam.productos.components;
 
 import es.uca.esifoodteam.productos.models.Producto;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.vaadin.flow.component.html.*;
+import com.vaadin.flow.component.button.*;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+
+import es.uca.esifoodteam.cart.*;
 
 public class ProductoCard extends VerticalLayout{
     private final Image imagen;
     private final H3 nombre;
     private final Paragraph descripcion;
+    private final Button agregarCarro;
 
-    public ProductoCard(Producto producto) {
+    private Producto producto;
+    private final CarritoService carritoService;
+
+    public ProductoCard(CarritoService carritoService) {
+        this.carritoService = carritoService;
         addClassName("producto-card");    
         setPadding(false);
         setSpacing(false);
 
-        if (producto.getImagenUrl() != null)
-            imagen = new Image(producto.getImagenUrl(), "Imagen de " + producto.getNombre());
-        else
-            imagen = new Image("", "Imagen no disponible");
+        imagen = new Image();
+        nombre = new H3();
+        descripcion = new Paragraph();
+        agregarCarro = new Button("Agregar al carrito");
+        agregarCarro.addClickListener(clickEvent -> {
+                carritoService.agregarCarrito(producto, 1)
+                    .exceptionally(ex -> {
+                        System.err.println("Error al agregar al carrito: " + ex.getMessage());
+                        return null;
+                    });
+            }
+        );
 
-        nombre = new H3(producto.getNombre());
-        descripcion = new Paragraph(producto.getDescripcion());
-
-        add(imagen, nombre, descripcion);
+        add(imagen, nombre, descripcion, agregarCarro);
     }
 
     public void setProducto(Producto producto) {
-        imagen.setSrc(producto.getImagenUrl());
+        this.producto = producto;
+        updateComponent();
+    }
+
+    private void updateComponent() {
+        imagen.setSrc(producto.getImagenUrl() != null ? producto.getImagenUrl() : "");
         imagen.setAlt("Imagen de " + producto.getNombre());
         nombre.setText(producto.getNombre());
         descripcion.setText(producto.getDescripcion());
     }
-
 }

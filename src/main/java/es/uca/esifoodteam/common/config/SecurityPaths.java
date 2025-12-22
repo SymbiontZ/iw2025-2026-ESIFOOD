@@ -6,6 +6,7 @@ public class SecurityPaths {
         "/",
         "/login",
         "/registro",
+        "/carrito",
         "/productos/**",
         "/VAADIN/**",
         "/css/**",
