@@ -30,9 +30,6 @@ public class Establecimiento {
     @Column(nullable = false, length = 255)
     private String direccion;
 
-    @Column(nullable = true)
-    private Boolean estaDisponible = true;
-
     @CreatedDate
     @Column(name = "created_date", updatable = false, nullable = false)
     private Instant createdDate;  
@@ -64,9 +61,6 @@ public class Establecimiento {
 
     public String getDireccion() { return direccion; }
     public void setDireccion(String direccion) { this.direccion = direccion; }
-
-    public Boolean getEstaDisponible() { return estaDisponible; }
-    public void setEstaDisponible(Boolean estaDisponible) { this.estaDisponible = estaDisponible; }
 
     public Instant getCreatedDate() { return createdDate; }
     public void setCreatedDate(Instant createdDate) { this.createdDate = createdDate; }

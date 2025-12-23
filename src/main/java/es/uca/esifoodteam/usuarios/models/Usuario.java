@@ -13,7 +13,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
-import es.uca.esifoodteam.establecimientos.Establecimiento;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -41,10 +40,6 @@ public class Usuario {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "tipo_id", nullable = false)
     private TipoUsuario tipo;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "establecimiento_id")   // puede ser null si es cliente
-    private Establecimiento establecimientoTrabajo;
 
     @NotBlank(message = "El nombre es obligatorio")
     @Size(max = 100, message = "El nombre no puede exceder 100 caracteres")
@@ -139,9 +134,6 @@ public class Usuario {
 
     public String getDireccion() { return direccion; }
     public void setDireccion(String direccion) { this.direccion = direccion; }
-
-    public Establecimiento getEstablecimientoTrabajo() { return establecimientoTrabajo; }
-    public void setEstablecimientoTrabajo(Establecimiento establecimientoTrabajo) { this.establecimientoTrabajo = establecimientoTrabajo; }
 
     public Instant getCreatedDate() { return createdDate; }
     public void setCreatedDate(Instant createdDate) { this.createdDate = createdDate; }

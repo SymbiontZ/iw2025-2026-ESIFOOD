@@ -10,7 +10,7 @@ import jakarta.persistence.Table;
 @Table(name = "producto_simple")
 public class Simple extends Producto {
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "tipo_producto_id", nullable = false)
     private TipoProducto tipoProducto;
 

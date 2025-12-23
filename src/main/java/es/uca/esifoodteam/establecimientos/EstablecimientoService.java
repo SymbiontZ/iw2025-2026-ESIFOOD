@@ -1,11 +1,10 @@
 package es.uca.esifoodteam.establecimientos;
 
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -19,18 +18,6 @@ public class EstablecimientoService {
 
     public List<Establecimiento> findAll() {
         return EstablecimientoRepository.findAll();
-    }
-
-    public Optional<Establecimiento> findById(Long id) {
-        return EstablecimientoRepository.findById(id);
-    }
-
-    public List<Establecimiento> buscarPorNombre(String nombre) {
-        return EstablecimientoRepository.findByNombreContainingIgnoreCase(nombre);
-    }
-
-    public List<Establecimiento> findDisponibles() {
-        return EstablecimientoRepository.findByEstaDisponibleTrue();
     }
 
     public Establecimiento save(Establecimiento local) {

@@ -28,8 +28,6 @@ import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-import es.uca.esifoodteam.establecimientos.Establecimiento;
-import es.uca.esifoodteam.establecimientos.EstablecimientoRepository;
 import es.uca.esifoodteam.usuarios.models.TipoUsuario;
 import es.uca.esifoodteam.usuarios.models.Usuario;
 import es.uca.esifoodteam.usuarios.repositories.TipoUsuarioRepository;
@@ -43,13 +41,11 @@ public class AdminUsuariosView extends VerticalLayout {
     private final UsuarioService usuarioService;
     private final CurrentUserService currentUserService;
     private final TipoUsuarioRepository tipoUsuarioRepository;
-    private final EstablecimientoRepository establecimientoRepository;
 
     private Grid<Usuario> grid;
     private Dialog dialogEditar;
     private Dialog dialogVer;
     private ComboBox<TipoUsuario> comboTipoUsuario;
-    private ComboBox<Establecimiento> comboEstablecimiento;
 
     private BeanValidationBinder<Usuario> binder;
     private Usuario usuarioEditando = null;
@@ -63,13 +59,11 @@ public class AdminUsuariosView extends VerticalLayout {
     private HorizontalLayout buscadorLayout;
 
     public AdminUsuariosView(UsuarioService usuarioService,
-                             CurrentUserService currentUserService,
-                             TipoUsuarioRepository tipoUsuarioRepository,
-                             EstablecimientoRepository establecimientoRepository) {
+                            CurrentUserService currentUserService,
+                            TipoUsuarioRepository tipoUsuarioRepository) {
         this.usuarioService = usuarioService;
         this.currentUserService = currentUserService;
         this.tipoUsuarioRepository = tipoUsuarioRepository;
-        this.establecimientoRepository = establecimientoRepository;
 
         if (!isAdministrador()) {
             Notification.show("Acceso denegado. Solo administradores.", 3000, Notification.Position.TOP_CENTER);
@@ -149,10 +143,6 @@ public class AdminUsuariosView extends VerticalLayout {
         grid.addColumn(usuario -> usuario.getTipo_id() != null ? usuario.getTipo_id().getNombre() : "-")
                 .setHeader("Tipo").setSortable(true).setAutoWidth(true);
 
-        grid.addColumn(usuario -> usuario.getEstablecimientoTrabajo() != null ?
-                usuario.getEstablecimientoTrabajo().getNombre() : "-")
-                .setHeader("Establecimiento").setSortable(true).setAutoWidth(true);
-
         grid.addColumn(Usuario::getEsActivo).setHeader("Activo").setFlexGrow(0).setWidth("80px");
         grid.addColumn(usuario -> usuario.getPass() != null && !usuario.getPass().isEmpty()
                 ? "🔐 Configurada" : "❌ Pendiente")
@@ -201,12 +191,6 @@ public class AdminUsuariosView extends VerticalLayout {
         // ✅ Items cargados aquí para que el Binder pueda poner el valor
         comboTipoUsuario.setItems(tipoUsuarioRepository.findAll());
 
-        comboEstablecimiento = new ComboBox<>("Establecimiento");
-        comboEstablecimiento.setItemLabelGenerator(Establecimiento::getNombre);
-        comboEstablecimiento.setHelperText("Opcional para clientes");
-        comboEstablecimiento.setAllowCustomValue(false);
-        comboEstablecimiento.setItems(establecimientoRepository.findAll());
-
         Checkbox activoField = new Checkbox("Activo");
 
         binder = new BeanValidationBinder<>(Usuario.class);
@@ -225,7 +209,7 @@ public class AdminUsuariosView extends VerticalLayout {
 
         VerticalLayout form = new VerticalLayout(
                 nombreField, emailField, telefonoField, direccionField,
-                passField, comboTipoUsuario, comboEstablecimiento, activoField,
+                passField, comboTipoUsuario, activoField,
                 new HorizontalLayout(btnGuardar, btnCancelar)
         );
         form.setSpacing(true);
@@ -246,14 +230,11 @@ public class AdminUsuariosView extends VerticalLayout {
 
         // Asegura items actualizados por si han cambiado
         comboTipoUsuario.setItems(tipoUsuarioRepository.findAll());
-        comboEstablecimiento.setItems(establecimientoRepository.findAll());
 
         binder.readBean(new Usuario());
         passField.setVisible(true);
         passField.setValue("");
         passField.focus();
-
-        comboEstablecimiento.clear();
 
         dialogEditar.setHeaderTitle("➕ Nuevo Usuario");
         dialogEditar.open();
@@ -264,12 +245,9 @@ public class AdminUsuariosView extends VerticalLayout {
 
         // Asegura items actualizados
         comboTipoUsuario.setItems(tipoUsuarioRepository.findAll());
-        comboEstablecimiento.setItems(establecimientoRepository.findAll());
 
         binder.readBean(usuario);
         passField.setVisible(false);
-
-        comboEstablecimiento.setValue(usuario.getEstablecimientoTrabajo());
 
         dialogEditar.setHeaderTitle("✏️ Editar " + usuario.getNombre());
         dialogEditar.open();
@@ -279,18 +257,35 @@ public class AdminUsuariosView extends VerticalLayout {
         dialogVer.removeAll();
 
         VerticalLayout detalles = new VerticalLayout();
+        detalles.setSpacing(true);
+        detalles.setPadding(true);
+        
+        // Información principal
         detalles.add(new H3(usuario.getNombre() + " (" + usuario.getEmail() + ")"));
         detalles.add(new Paragraph("Dirección: " + (usuario.getDireccion().isEmpty() ? "-" : usuario.getDireccion())));
         detalles.add(new Paragraph("Teléfono: " + (usuario.getTelefono().isEmpty() ? "-" : usuario.getTelefono())));
         detalles.add(new Paragraph("Tipo: " + (usuario.getTipo_id() != null ? usuario.getTipo_id().getNombre() : "-")));
-
-        detalles.add(new Paragraph("Establecimiento: " +
-                (usuario.getEstablecimientoTrabajo() != null ?
-                        usuario.getEstablecimientoTrabajo().getNombre() : "❌ Sin asignar")));
-
         detalles.add(new Paragraph("Estado: " + (usuario.getEsActivo() ? "✅ Activo" : "❌ Inactivo")));
         detalles.add(new Paragraph("Contraseña: " +
                 (usuario.getPass() != null && !usuario.getPass().isEmpty() ? "🔐 Configurada" : "❌ Pendiente")));
+
+        // Separador visual
+        detalles.add(new H3("📋 Auditoría"));
+
+        // Campos de auditoría
+        detalles.add(new Paragraph("Creado por: " + 
+                (usuario.getCreatedBy() != null ? usuario.getCreatedBy() : "❌ No disponible")));
+        
+        detalles.add(new Paragraph("Fecha creación: " + 
+                (usuario.getCreatedDate() != null ? 
+                        usuario.getCreatedDate().toString() : "❌ No disponible")));
+        
+        detalles.add(new Paragraph("Modificado por: " + 
+                (usuario.getModifiedBy() != null ? usuario.getModifiedBy() : "❌ No disponible")));
+        
+        detalles.add(new Paragraph("Última modificación: " + 
+                (usuario.getModifiedDate() != null ? 
+                        usuario.getModifiedDate().toString() : "❌ No disponible")));
 
         dialogVer.add(detalles);
         dialogVer.open();
@@ -301,8 +296,6 @@ public class AdminUsuariosView extends VerticalLayout {
             if (usuarioEditando == null) {
                 Usuario nuevoUsuario = new Usuario();
                 binder.writeBean(nuevoUsuario);
-
-                nuevoUsuario.setEstablecimientoTrabajo(comboEstablecimiento.getValue());
 
                 String passPlana = passField.getValue().trim();
                 if (passPlana == null || passPlana.isEmpty()) {
@@ -325,8 +318,6 @@ public class AdminUsuariosView extends VerticalLayout {
                 Notification.show("✅ Usuario creado correctamente", 3000, Notification.Position.MIDDLE);
             } else {
                 binder.writeBean(usuarioEditando);
-
-                usuarioEditando.setEstablecimientoTrabajo(comboEstablecimiento.getValue());
 
                 if (usuarioEditando.getTipo_id() == null) {
                     Notification.show("❌ Selecciona un tipo de usuario", 3000, Notification.Position.MIDDLE);

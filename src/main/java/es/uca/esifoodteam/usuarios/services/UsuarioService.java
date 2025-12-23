@@ -6,7 +6,6 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import es.uca.esifoodteam.establecimientos.EstablecimientoRepository;
 import es.uca.esifoodteam.usuarios.models.TipoUsuario;
 import es.uca.esifoodteam.usuarios.models.Usuario;
 import es.uca.esifoodteam.usuarios.repositories.UsuarioRepository;
@@ -16,14 +15,11 @@ public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
     private final TipoUsuarioService tipoUsuarioService;
-    private final EstablecimientoRepository establecimientoRepository;
 
     public UsuarioService(UsuarioRepository usuarioRepository, 
-                         TipoUsuarioService tipoUsuarioService,
-                         EstablecimientoRepository establecimientoRepository) {
+                         TipoUsuarioService tipoUsuarioService) {
         this.usuarioRepository = usuarioRepository;
         this.tipoUsuarioService = tipoUsuarioService;
-        this.establecimientoRepository = establecimientoRepository;
     }
 
     // Listar todos
@@ -54,12 +50,6 @@ public class UsuarioService {
         if (usuario.getEsActivo() == null) {
             throw new RuntimeException("Estado requerido");
         }
-
-        if (usuario.getEstablecimientoTrabajo() != null && usuario.getEstablecimientoTrabajo().getId() != null) {
-            if (!establecimientoRepository.existsById(usuario.getEstablecimientoTrabajo().getId())) {
-                throw new RuntimeException("Establecimiento no existe");
-            }
-        }
         
         return usuarioRepository.save(usuario);
     }
@@ -82,13 +72,11 @@ public class UsuarioService {
             throw new RuntimeException("Teléfono ya existe");
         }
         
-        // ✅ USA getters REALES de tu modelo Usuario
         usuario.setNombre(usuarioDetails.getNombre());
         usuario.setEmail(usuarioDetails.getEmail());
         usuario.setTelefono(usuarioDetails.getTelefono());
         usuario.setDireccion(usuarioDetails.getDireccion());
         usuario.setTipo_id(usuarioDetails.getTipo_id());
-        usuario.setEstablecimientoTrabajo(usuarioDetails.getEstablecimientoTrabajo());
         usuario.setEsActivo(usuarioDetails.getEsActivo());
 
         return usuarioRepository.save(usuario);

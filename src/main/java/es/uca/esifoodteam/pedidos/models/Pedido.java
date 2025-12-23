@@ -12,7 +12,6 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import es.uca.esifoodteam.establecimientos.Establecimiento;
 import es.uca.esifoodteam.usuarios.models.Usuario;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -49,9 +48,6 @@ public class Pedido {
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LineaPedido> lineas = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "establecimiento_id", nullable = false)
-    private Establecimiento establecimiento;
 
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal precio;
@@ -114,9 +110,6 @@ public class Pedido {
 
     public List<LineaPedido> getLineas() { return lineas; }
     public void setLineas(List<LineaPedido> lineas) { this.lineas = lineas; }
-
-    public Establecimiento getLocal() { return establecimiento; }
-    public void setLocal(Establecimiento establecimiento) { this.establecimiento = establecimiento; }
 
     public Instant getCreatedDate() { return createdDate; }
     public void setCreatedDate(Instant createdDate) { this.createdDate = createdDate; }
