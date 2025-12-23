@@ -18,13 +18,13 @@ public class SecurityConfig {
         this.authService = authService;
     }
 
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(authz -> authz
                 .requestMatchers(SecurityPaths.PUBLIC_PATHS).permitAll()
-                .requestMatchers("/admin/**").hasRole("ADMINISTRADOR")
+                .requestMatchers("/admin/usuarios/**").hasRole("ADMINISTRADOR")  
+                .requestMatchers("/admin/establecimiento").hasAnyRole("ADMINISTRADOR", "ENCARGADO") 
                 .requestMatchers(SecurityPaths.PROTECTED_PATHS).authenticated()
                 .anyRequest().authenticated()
             )
