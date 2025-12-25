@@ -25,6 +25,7 @@ public class SecurityConfig {
                 .requestMatchers(SecurityPaths.PUBLIC_PATHS).permitAll()
                 .requestMatchers("/admin/usuarios/**").hasRole("ADMINISTRADOR")  
                 .requestMatchers("/admin/establecimiento").hasAnyRole("ADMINISTRADOR", "ENCARGADO") 
+                .requestMatchers("/perfil/**").authenticated()
                 .requestMatchers(SecurityPaths.PROTECTED_PATHS).authenticated()
                 .anyRequest().authenticated()
             )

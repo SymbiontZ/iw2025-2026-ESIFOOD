@@ -39,7 +39,7 @@ public class Navbar extends Header {
             // Mostrar nombre/email del usuario (opcional)
             String username = getCurrentUsername();
             if (username != null && !username.isEmpty()) {
-                Anchor userInfo = new Anchor("#", username);
+                Anchor userInfo = new Anchor("/perfil", username);
                 userInfo.setClassName("navbar-link");
                 navbarContainers[2].add(userInfo);
             }

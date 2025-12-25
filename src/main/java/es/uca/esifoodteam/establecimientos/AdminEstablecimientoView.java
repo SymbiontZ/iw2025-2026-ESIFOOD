@@ -31,7 +31,7 @@ public class AdminEstablecimientoView extends VerticalLayout {
     private TextField direccionField;
     private HorizontalLayout botonesLayout;
     private boolean modoEdicion = false;
-    private Div infoDiv; // ✅ Reemplazo del Dialog
+    private Div infoDiv; 
 
     public AdminEstablecimientoView(EstablecimientoService establecimientoService,
                                   EstablecimientoRepository establecimientoRepository,

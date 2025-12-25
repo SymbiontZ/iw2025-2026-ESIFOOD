@@ -17,7 +17,7 @@ public class UsuarioService {
     private final TipoUsuarioService tipoUsuarioService;
 
     public UsuarioService(UsuarioRepository usuarioRepository, 
-                         TipoUsuarioService tipoUsuarioService) {
+                          TipoUsuarioService tipoUsuarioService) {
         this.usuarioRepository = usuarioRepository;
         this.tipoUsuarioService = tipoUsuarioService;
     }
@@ -54,7 +54,7 @@ public class UsuarioService {
         return usuarioRepository.save(usuario);
     }
 
-    // Actualizar usuario
+    // Actualizar usuario - ✅ RGPD: NO guardar email en modified_by
     @Transactional
     public Usuario update(Long id, Usuario usuarioDetails) {
         Usuario usuario = usuarioRepository.findById(id)
@@ -71,6 +71,9 @@ public class UsuarioService {
             usuarioRepository.existsByTelefonoAndIdNot(usuarioDetails.getTelefono(), id)) {
             throw new RuntimeException("Teléfono ya existe");
         }
+        
+        // ✅ RGPD: Valor genérico para auditoría
+        usuario.setModifiedBy("USUARIO");
         
         usuario.setNombre(usuarioDetails.getNombre());
         usuario.setEmail(usuarioDetails.getEmail());
@@ -103,5 +106,23 @@ public class UsuarioService {
 
     public List<Usuario> searchByNombre(String nombre) {
         return usuarioRepository.findByNombreContainingIgnoreCase(nombre);
+    }
+
+    // ✅ NUEVOS MÉTODOS PARA PERFIL DE USUARIO
+    public Optional<Usuario> findByEmail(String email) {
+        return usuarioRepository.findByEmail(email);
+    }
+
+    public Optional<Usuario> findByEmailAndEsActivo(String email, Boolean activo) {
+        return usuarioRepository.findByEmailAndEsActivo(email, activo);
+    }
+
+    public boolean existsByEmailAndIdNot(String email, Long id) {
+        return usuarioRepository.existsByEmailAndIdNot(email, id);
+    }
+
+    @Transactional
+    public void suprimirDatosPersonales(Long id) {
+        usuarioRepository.anonimizarUsuarioRGPD(id);
     }
 }

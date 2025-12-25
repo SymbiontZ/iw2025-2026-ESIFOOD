@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import es.uca.esifoodteam.usuarios.models.TipoUsuario;
@@ -31,4 +33,16 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     
     // Búsqueda por nombre (LIKE)
     List<Usuario> findByNombreContainingIgnoreCase(String nombre);
+    
+    @Modifying
+    @Query(value =  "UPDATE usuario " +
+                    "SET nombre = CONCAT('ANÓNIMO_', ?1), " +
+                    "email = CONCAT('anonimo_', ?1, '@eliminado.esifood'), " +
+                    "telefono = '000000000', " +
+                    "direccion = 'DIRECCIÓN_ANONIMIZADA', " +
+                    "es_activo = false, " +
+                    "modified_by = 'ANÓNIMO', " +
+                    "modified_date = CURRENT_TIMESTAMP " +
+                    "WHERE id = ?1", nativeQuery = true)
+    void anonimizarUsuarioRGPD(Long id);
 }
