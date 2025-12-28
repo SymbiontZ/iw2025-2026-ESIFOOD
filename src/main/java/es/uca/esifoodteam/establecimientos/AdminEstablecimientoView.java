@@ -12,42 +12,49 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
+import es.uca.esifoodteam.common.layouts.MainLayout;
 import es.uca.esifoodteam.usuarios.models.Usuario;
 import es.uca.esifoodteam.usuarios.services.CurrentUserService;
 
 @Route("admin/establecimiento")
 @PageTitle("Gestión Establecimiento | ESIFOOD")
-public class AdminEstablecimientoView extends VerticalLayout {
+public class AdminEstablecimientoView extends MainLayout implements BeforeEnterObserver {
 
     private final EstablecimientoService establecimientoService;
     private final EstablecimientoRepository establecimientoRepository;
     private final CurrentUserService currentUserService;
-    
+
     private Establecimiento establecimiento;
     private TextField nombreField;
     private TextField direccionField;
     private HorizontalLayout botonesLayout;
     private boolean modoEdicion = false;
-    private Div infoDiv; 
+    private Div infoDiv;
 
     public AdminEstablecimientoView(EstablecimientoService establecimientoService,
-                                  EstablecimientoRepository establecimientoRepository,
-                                  CurrentUserService currentUserService) {
+                                    EstablecimientoRepository establecimientoRepository,
+                                    CurrentUserService currentUserService) {
         this.establecimientoService = establecimientoService;
         this.establecimientoRepository = establecimientoRepository;
         this.currentUserService = currentUserService;
 
-        if (!tienePermisos()) {
-            Notification.show("Acceso denegado", 3000, Notification.Position.TOP_CENTER);
-            getUI().ifPresent(ui -> ui.navigate("/"));
-            return;
-        }
-
+        // Aquí ya NO se comprueban permisos
         cargarDatos();
         crearInterfaz();
+    }
+
+    @Override
+    public void beforeEnter(BeforeEnterEvent event) {
+        if (!tienePermisos()) {
+            Notification.show("❌ Acceso denegado", 3000, Notification.Position.TOP_CENTER);
+            // Igual que en AdminView:
+            event.forwardTo(""); // o LoginView.class, etc.
+        }
     }
 
     private void cargarDatos() {
@@ -58,32 +65,31 @@ public class AdminEstablecimientoView extends VerticalLayout {
     }
 
     private void crearInterfaz() {
-        setSpacing(true);
-        setPadding(true);
-        setSizeFull();
+        VerticalLayout content = new VerticalLayout();
+        content.setSpacing(true);
+        content.setPadding(true);
+        content.setSizeFull();
 
         H2 header = new H2("🏪 Establecimiento");
-        add(header);
+        content.add(header);
 
         nombreField = new TextField("Nombre");
         nombreField.setValue(establecimiento != null ? establecimiento.getNombre() : "");
         nombreField.setWidthFull();
         nombreField.setEnabled(false);
-        add(nombreField);
+        content.add(nombreField);
 
         direccionField = new TextField("Dirección");
         direccionField.setValue(establecimiento != null ? establecimiento.getDireccion() : "");
         direccionField.setWidthFull();
         direccionField.setEnabled(false);
-        add(direccionField);
+        content.add(direccionField);
 
         botonesLayout = new HorizontalLayout();
         botonesLayout.setWidthFull();
-        botonesLayout.setJustifyContentMode(JustifyContentMode.START);
         actualizarBotones();
-        add(botonesLayout);
+        content.add(botonesLayout);
 
-        // ✅ Div oculto para info (reemplazo del Dialog)
         infoDiv = new Div();
         infoDiv.setVisible(false);
         infoDiv.addClassName("info-section");
@@ -93,27 +99,29 @@ public class AdminEstablecimientoView extends VerticalLayout {
             .set("border-radius", "8px")
             .set("border", "1px solid var(--lumo-contrast-10pct)")
             .set("margin-top", "20px");
-        add(infoDiv);
+        content.add(infoDiv);
+
+        add(content);
     }
 
     private void actualizarBotones() {
         botonesLayout.removeAll();
-        
+
         if (modoEdicion) {
             Button btnGuardar = new Button("💾 Guardar", e -> guardar());
             btnGuardar.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-            
+
             Button btnCancelar = new Button("❌ Cancelar", e -> cancelar());
             btnCancelar.addThemeVariants(ButtonVariant.LUMO_ERROR);
-            
+
             botonesLayout.add(btnGuardar, btnCancelar);
         } else {
             Button btnEditar = new Button("✏️ Editar", e -> editar());
             btnEditar.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-            
+
             Button btnVer = new Button("📋 Ver info", e -> mostrarInfo());
             btnVer.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
-            
+
             botonesLayout.add(btnEditar, btnVer);
         }
     }
@@ -123,7 +131,7 @@ public class AdminEstablecimientoView extends VerticalLayout {
         nombreField.setEnabled(true);
         direccionField.setEnabled(true);
         actualizarBotones();
-        infoDiv.setVisible(false); // Ocultar info
+        infoDiv.setVisible(false);
     }
 
     private void guardar() {
@@ -143,9 +151,9 @@ public class AdminEstablecimientoView extends VerticalLayout {
         establecimiento.setNombre(nombre);
         establecimiento.setDireccion(direccion);
         establecimientoService.save(establecimiento);
-        
+
         Notification.show("✅ Guardado correctamente", 2000, Notification.Position.MIDDLE);
-        
+
         modoEdicion = false;
         nombreField.setEnabled(false);
         direccionField.setEnabled(false);
@@ -169,20 +177,20 @@ public class AdminEstablecimientoView extends VerticalLayout {
             return;
         }
 
-        // ✅ Div con componentes Vaadin NATIVOS (SIN HTML)
         infoDiv.removeAll();
-        
+
         H3 titulo = new H3("🏪 " + establecimiento.getNombre());
         Paragraph dir = new Paragraph("📍 Dirección: " + establecimiento.getDireccion());
-        
+
         H3 auditoria = new H3("📋 Auditoría");
-        Paragraph modificadoPor = new Paragraph("✏️ Modificado por: " + (establecimiento.getModifiedBy() != null ? establecimiento.getModifiedBy() : "-"));
-        Paragraph ultimaMod = new Paragraph("🔄 Última modificación: " + (establecimiento.getModifiedDate() != null ? establecimiento.getModifiedDate().toString() : "-"));
+        Paragraph modificadoPor = new Paragraph("✏️ Modificado por: " +
+                (establecimiento.getModifiedBy() != null ? establecimiento.getModifiedBy() : "-"));
+        Paragraph ultimaMod = new Paragraph("🔄 Última modificación: " +
+                (establecimiento.getModifiedDate() != null ? establecimiento.getModifiedDate().toString() : "-"));
 
         infoDiv.add(titulo, dir, auditoria, modificadoPor, ultimaMod);
         infoDiv.setVisible(true);
-        
-        // Scroll suave al final
+
         infoDiv.getElement().scrollIntoView();
     }
 

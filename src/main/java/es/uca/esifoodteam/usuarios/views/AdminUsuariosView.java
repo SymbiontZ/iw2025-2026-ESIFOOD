@@ -28,15 +28,16 @@ import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
+import es.uca.esifoodteam.common.layouts.MainLayout;
 import es.uca.esifoodteam.usuarios.models.TipoUsuario;
 import es.uca.esifoodteam.usuarios.models.Usuario;
 import es.uca.esifoodteam.usuarios.repositories.TipoUsuarioRepository;
 import es.uca.esifoodteam.usuarios.services.CurrentUserService;
-import es.uca.esifoodteam.usuarios.services.UsuarioService;
+import es.uca.esifoodteam.usuarios.services.UsuarioService;  // ✅ AÑADIDO
 
 @Route("admin/usuarios")
 @PageTitle("Gestión Usuarios | ESIFOOD")
-public class AdminUsuariosView extends VerticalLayout {
+public class AdminUsuariosView extends MainLayout {  // ✅ CAMBIADO de VerticalLayout
 
     private final UsuarioService usuarioService;
     private final CurrentUserService currentUserService;
@@ -59,8 +60,8 @@ public class AdminUsuariosView extends VerticalLayout {
     private HorizontalLayout buscadorLayout;
 
     public AdminUsuariosView(UsuarioService usuarioService,
-                            CurrentUserService currentUserService,
-                            TipoUsuarioRepository tipoUsuarioRepository) {
+                             CurrentUserService currentUserService,
+                             TipoUsuarioRepository tipoUsuarioRepository) {
         this.usuarioService = usuarioService;
         this.currentUserService = currentUserService;
         this.tipoUsuarioRepository = tipoUsuarioRepository;
@@ -71,7 +72,14 @@ public class AdminUsuariosView extends VerticalLayout {
             return;
         }
 
-        crearUI();
+        // ✅ VerticalLayout para CONTENIDO (NO principal)
+        VerticalLayout content = new VerticalLayout();
+        content.setSpacing(true);
+        content.setPadding(true);
+        content.setSizeFull();
+
+        crearUI(content);  // ✅ Pasar content al método
+        add(content);      // ✅ Añadir al MainLayout
     }
 
     @Override
@@ -85,11 +93,7 @@ public class AdminUsuariosView extends VerticalLayout {
         grid.setItems(todosLosUsuarios);
     }
 
-    private void crearUI() {
-        setSpacing(true);
-        setPadding(true);
-        setSizeFull();
-
+    private void crearUI(VerticalLayout content) {  // ✅ Recibe content como parámetro
         H2 header = new H2("👥 Gestión de Usuarios");
         header.addClassName("admin-header");
 
@@ -100,7 +104,7 @@ public class AdminUsuariosView extends VerticalLayout {
         crearBuscadorConBotones();
 
         HorizontalLayout controles = new HorizontalLayout(btnAgregar, buscadorLayout);
-        controles.setJustifyContentMode(JustifyContentMode.BETWEEN);
+        // ✅ SIN JustifyContentMode
         controles.setWidthFull();
         controles.setPadding(true);
         controles.setSpacing(true);
@@ -111,7 +115,7 @@ public class AdminUsuariosView extends VerticalLayout {
         crearDialogEditar();
         crearDialogVer();
 
-        add(header, controles, grid, dialogEditar, dialogVer);
+        content.add(header, controles, grid, dialogEditar, dialogVer);
     }
 
     private void crearBuscadorConBotones() {
@@ -129,7 +133,7 @@ public class AdminUsuariosView extends VerticalLayout {
 
         buscadorLayout = new HorizontalLayout(buscador, btnBuscar, btnLimpiar);
         buscadorLayout.setSpacing(true);
-        buscadorLayout.setAlignItems(Alignment.CENTER);
+        // ✅ SIN Alignment
     }
 
     private void configurarGrid() {
@@ -188,7 +192,6 @@ public class AdminUsuariosView extends VerticalLayout {
 
         comboTipoUsuario = new ComboBox<>("Tipo Usuario");
         comboTipoUsuario.setItemLabelGenerator(TipoUsuario::getNombre);
-        // ✅ Items cargados aquí para que el Binder pueda poner el valor
         comboTipoUsuario.setItems(tipoUsuarioRepository.findAll());
 
         Checkbox activoField = new Checkbox("Activo");
@@ -228,7 +231,6 @@ public class AdminUsuariosView extends VerticalLayout {
     private void abrirDialogCrear() {
         usuarioEditando = null;
 
-        // Asegura items actualizados por si han cambiado
         comboTipoUsuario.setItems(tipoUsuarioRepository.findAll());
 
         binder.readBean(new Usuario());
@@ -243,7 +245,6 @@ public class AdminUsuariosView extends VerticalLayout {
     private void abrirDialogEditar(Usuario usuario) {
         usuarioEditando = usuario;
 
-        // Asegura items actualizados
         comboTipoUsuario.setItems(tipoUsuarioRepository.findAll());
 
         binder.readBean(usuario);
@@ -260,7 +261,6 @@ public class AdminUsuariosView extends VerticalLayout {
         detalles.setSpacing(true);
         detalles.setPadding(true);
         
-        // Información principal
         detalles.add(new H3(usuario.getNombre() + " (" + usuario.getEmail() + ")"));
         detalles.add(new Paragraph("Dirección: " + (usuario.getDireccion().isEmpty() ? "-" : usuario.getDireccion())));
         detalles.add(new Paragraph("Teléfono: " + (usuario.getTelefono().isEmpty() ? "-" : usuario.getTelefono())));
@@ -269,10 +269,8 @@ public class AdminUsuariosView extends VerticalLayout {
         detalles.add(new Paragraph("Contraseña: " +
                 (usuario.getPass() != null && !usuario.getPass().isEmpty() ? "🔐 Configurada" : "❌ Pendiente")));
 
-        // Separador visual
         detalles.add(new H3("📋 Auditoría"));
 
-        // Campos de auditoría
         detalles.add(new Paragraph("Creado por: " + 
                 (usuario.getCreatedBy() != null ? usuario.getCreatedBy() : "❌ No disponible")));
         
@@ -394,8 +392,7 @@ public class AdminUsuariosView extends VerticalLayout {
 
         HorizontalLayout buttons = new HorizontalLayout(btnConfirmar, btnCancelar);
         buttons.setWidthFull();
-        buttons.setJustifyContentMode(JustifyContentMode.END);
-
+        // ✅ SIN JustifyContentMode
         content.add(buttons);
         confirmDialog.add(content);
         confirmDialog.open();
