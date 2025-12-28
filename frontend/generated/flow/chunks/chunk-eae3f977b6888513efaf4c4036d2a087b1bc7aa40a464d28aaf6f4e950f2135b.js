@@ -1,7 +1,7 @@
 import '@vaadin/polymer-legacy-adapter/style-modules.js';
-import '@vaadin/horizontal-layout/theme/lumo/vaadin-horizontal-layout.js';
-import '@vaadin/vertical-layout/theme/lumo/vaadin-vertical-layout.js';
-import '@vaadin/app-layout/theme/lumo/vaadin-app-layout.js';
+import '@vaadin/horizontal-layout/src/vaadin-horizontal-layout.js';
+import '@vaadin/vertical-layout/src/vaadin-vertical-layout.js';
+import '@vaadin/app-layout/src/vaadin-app-layout.js';
 import { injectGlobalCss } from 'Frontend/generated/jar-resources/theme-util.js';
 
 import { css, unsafeCSS, registerStyles } from '@vaadin/vaadin-themable-mixin';
