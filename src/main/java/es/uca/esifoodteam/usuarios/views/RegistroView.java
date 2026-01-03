@@ -4,6 +4,8 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
+import com.vaadin.flow.component.orderedlayout.FlexComponent.JustifyContentMode;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
@@ -12,6 +14,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
+import es.uca.esifoodteam.common.layouts.MainLayout;
 import es.uca.esifoodteam.usuarios.models.TipoUsuario;
 import es.uca.esifoodteam.usuarios.models.Usuario;
 import es.uca.esifoodteam.usuarios.repositories.TipoUsuarioRepository;
@@ -20,7 +23,7 @@ import es.uca.esifoodteam.usuarios.services.AuthService;
 @Route("registro")
 @PageTitle("Registro | ESIFOOD")
 @AnonymousAllowed
-public class RegistroView extends VerticalLayout {
+public class RegistroView extends MainLayout {
 
     private final AuthService authService;
     private final TipoUsuarioRepository tipoUsuarioRepository;
@@ -37,9 +40,10 @@ public class RegistroView extends VerticalLayout {
         this.authService = authService;
         this.tipoUsuarioRepository = tipoUsuarioRepository;
 
-        setSizeFull();
-        setAlignItems(Alignment.CENTER);
-        setJustifyContentMode(JustifyContentMode.CENTER);
+        VerticalLayout content = new VerticalLayout();
+        content.setSizeFull();
+        content.setAlignItems(Alignment.CENTER);
+        content.setJustifyContentMode(JustifyContentMode.CENTER);
 
         nombre.setRequired(true);
         email.setRequired(true);
@@ -49,7 +53,7 @@ public class RegistroView extends VerticalLayout {
         registrar.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         registrar.addClickListener(e -> registrarUsuario());
 
-        add(
+        content.add(
             new H1("Crear cuenta ESIFOOD"),
             nombre,
             telefono,
@@ -59,6 +63,8 @@ public class RegistroView extends VerticalLayout {
             passConfirm,
             registrar
         );
+
+        add(content);
     }
 
     private void registrarUsuario() {
