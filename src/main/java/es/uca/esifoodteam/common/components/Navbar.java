@@ -61,8 +61,10 @@ public class Navbar extends Header {
 
             navbarContainers[2].add(logout);
         } else {
-            Anchor login = new Anchor("/login", "Iniciar sesión");
-            login.setClassName("navbar-link");
+            Anchor login = new Anchor("/login");
+            Icon loginIcon = new Icon(VaadinIcon.SIGN_IN);
+            loginIcon.setClassName("navbar-icon");
+            login.add(loginIcon);
             navbarContainers[2].add(login);
         }
     }

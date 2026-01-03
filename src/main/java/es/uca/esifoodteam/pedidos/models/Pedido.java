@@ -53,6 +53,9 @@ public class Pedido {
     private BigDecimal precio;
 
     @Column(nullable = false)
+    private Boolean esRecogida = true;
+
+    @Column(nullable = false)
     private LocalDateTime fechaHora;  
 
     @Column(length = 500)
@@ -98,6 +101,9 @@ public class Pedido {
 
     public BigDecimal getPrecio() { return precio; }
     public void setPrecio(BigDecimal precio) { this.precio = precio; }
+
+    public Boolean getEsRecogida() {return esRecogida;}
+    public void setEsRecogida(Boolean esRecogida) {this.esRecogida = esRecogida;}
 
     public LocalDateTime getFechaHora() { return fechaHora; }
     public void setFechaHora(LocalDateTime fechaHora) { this.fechaHora = fechaHora; }

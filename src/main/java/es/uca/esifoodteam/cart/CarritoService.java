@@ -25,65 +25,77 @@ public class CarritoService {
         this.productoService = productoService;
     }
 
-    private CompletableFuture<CarroSnapshot> cargar_carro(){
-        return WebStorage.getItem(Storage.LOCAL_STORAGE, CARRITO_KEY)
-            .thenApply(carroJson -> {
-                if(carroJson == null || carroJson.isEmpty())
-                {
-                    return new CarroSnapshot();
-                }
-                try {
-                    return mapper.readValue(carroJson, CarroSnapshot.class);
-                } catch (Exception e) {
-                    WebStorage.removeItem(Storage.LOCAL_STORAGE, CARRITO_KEY);
-                    System.err.println("Error cargando el carro: " + e.getMessage());
-                    return new CarroSnapshot();
-                }
-            });
-    }
-
-    private void guardar_carro(CarroSnapshot carro){
+    private CompletableFuture<Void> guardar_carro(CarroSnapshot carro){
         try {
             String carroJson = mapper.writeValueAsString(carro);
             System.out.println("Guardando carro: " + carroJson);
             WebStorage.setItem(Storage.LOCAL_STORAGE, CARRITO_KEY, carroJson);
+            return CompletableFuture.completedFuture(null);
         } catch (Exception e) {
-            WebStorage.removeItem(Storage.LOCAL_STORAGE, CARRITO_KEY);
             System.err.println("Error guardando el carro: " + e.getMessage());
+            WebStorage.removeItem(Storage.LOCAL_STORAGE, CARRITO_KEY);
+            return CompletableFuture.completedFuture(null);
         }
     }
 
     public CompletableFuture<Carro> getCarro() {
-        return cargar_carro().thenApply(snapshot -> {
-            Carro carro = new Carro();
-            if(snapshot.getItems() == null) {
-                return carro;
-            }
-            for (ItemCarroSnapshot itemSnap : snapshot.getItems()) {
-                ItemCarro item = new ItemCarro();
-                Optional<Producto> producto = productoService.findById(itemSnap.getProductoId());
-                if (producto.isEmpty()) {
-                    continue; // O manejar el error según sea necesario
+        return WebStorage.getItem(Storage.LOCAL_STORAGE, CARRITO_KEY)
+            .thenApply(carroJson -> {
+                Carro carro = new Carro();
+                if(carroJson == null || carroJson.isEmpty()) {
+                    return carro;
                 }
-                item.setProducto(producto.get());
-                item.setCantidad(itemSnap.getCantidad());
-                // Aquí se podrían mapear las bases y extras si es necesario
-                carro.getItems().add(item);
-            }
-            return carro;
-        });
+                try {
+                    CarroSnapshot snapshot = mapper.readValue(carroJson, CarroSnapshot.class);
+                    if(snapshot.getItems() == null) {
+                        return carro;
+                    }
+                    for (ItemCarroSnapshot itemSnap : snapshot.getItems()) {
+                        ItemCarro item = new ItemCarro();
+                        Optional<Producto> producto = productoService.findById(itemSnap.getProductoId());
+                        if (producto.isEmpty()) {
+                            continue;
+                        }
+                        item.setProducto(producto.get());
+                        item.setCantidad(itemSnap.getCantidad());
+                        carro.getItems().add(item);
+                    }
+                } catch (Exception e) {
+                    System.err.println("Error parseando carrito: " + e.getMessage());
+                }
+                return carro;
+            });
     }
 
     public CompletableFuture<Void> agregarCarrito(Producto producto, Integer cantidad) {
-        return cargar_carro().thenAccept(carro -> {
-            System.out.println("Agregando al carro: " + producto.getNombre() + " Cantidad: " + cantidad);
-            ItemCarroSnapshot nuevoItem = new ItemCarroSnapshot();
-            nuevoItem.setProductoId(producto.getId());
-            nuevoItem.setCantidad(cantidad);
+        return WebStorage.getItem(Storage.LOCAL_STORAGE, CARRITO_KEY)
+            .thenCompose(carroJson -> {
+                CarroSnapshot carro;
+                if(carroJson == null || carroJson.isEmpty()) {
+                    carro = new CarroSnapshot();
+                } else {
+                    try {
+                        carro = mapper.readValue(carroJson, CarroSnapshot.class);
+                    } catch (Exception e) {
+                        System.err.println("Error cargando el carro: " + e.getMessage());
+                        carro = new CarroSnapshot();
+                    }
+                }
+                
+                System.out.println("Agregando al carro: " + producto.getNombre() + " Cantidad: " + cantidad);
+                ItemCarroSnapshot nuevoItem = new ItemCarroSnapshot();
+                nuevoItem.setProductoId(producto.getId());
+                nuevoItem.setCantidad(cantidad);
+                
+                carro.getItems().add(nuevoItem);
+                System.out.println("Carro actualizado con " + carro.getItems().size() + " items.");
+                
+                return guardar_carro(carro);
+            });
+    }
 
-            carro.getItems().add(nuevoItem);
-            System.out.println("Carro actualizado con " + carro.getItems().size() + " items.");
-            guardar_carro(carro);
-        });
+    public CompletableFuture<Void> vaciarCarrito() {
+        WebStorage.removeItem(Storage.LOCAL_STORAGE, CARRITO_KEY);
+        return CompletableFuture.completedFuture(null);
     }
 }
