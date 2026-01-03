@@ -1,8 +1,4 @@
-## 🧩 Diagrama de Clases (Mermaid)
-
-> Las operaciones se omiten por claridad.  
-> Este diagrama muestra las entidades principales, sus relaciones y una clase de asociación (`ActualizacionPedido`).
-> Se muestran las id's y FK para la claridad y desarrollo simultáneo entre los distintos miembros del equipo.
+## Diagrama de Clases (Mermaid)
 
 ```mermaid
 classDiagram
@@ -78,12 +74,9 @@ classDiagram
         Usuario "*" -- "1" TipoUsuario : tipo
         Usuario "*" -- "1" EstadoUsuario : estado
         Usuario "1" -- "*" Pedido : realiza
-        %% Si el Usuario incluye clientes y empleados, convendría que fuese opcional:
-        Usuario "*" -- "0..1" Establecimiento : trabaja_en
     
         %% --- Pedido ---
         Pedido "1" -- "*" LineaPedido : contiene
-        Pedido "*" -- "1" Establecimiento : pertenece_a
         Pedido "1" -- "*" ActualizacionPedido : tiene_historial
         EstadoPedido "1" -- "*" ActualizacionPedido : aparece_en
     
