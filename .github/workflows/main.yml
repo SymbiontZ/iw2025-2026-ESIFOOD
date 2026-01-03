@@ -27,7 +27,7 @@ jobs:
       - name: Build with Maven and analyze with Sonar Cloud
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}tro proyecto en SonarCloud
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: mvn clean -Dmaven.test.skip=true -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=SymbiontZ_iw2025-2026-ESIFOOD
 
       # Suprimible para la asignatura, pero útil para tener el paquete en GitHub Packages
