@@ -1,8 +1,9 @@
 ## Diagrama de Clases (Mermaid)
 
 ```mermaid
-classDiagram
-    
+classDiagram 
+        direction LR
+
         %% ==== DEFINICIÓN DE CLASES ====
     
         %% --- Usuarios ---
@@ -65,7 +66,6 @@ classDiagram
         class Establecimiento {
                 String nombre 
                 String direccion 
-                boolean estaDisponible
         }
     
         %% ==== RELACIONES ====
@@ -87,4 +87,3 @@ classDiagram
         Producto "1" -- "*" LineaPedido : aparece_en
         Producto "*" -- "*" Ingrediente : usa
         Simple "*" -- "1" TipoProducto : pertenece_a
-    

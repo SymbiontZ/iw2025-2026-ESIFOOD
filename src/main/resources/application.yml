@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: ${SERVER_PORT:5000}
 
 spring:
   main:
@@ -7,10 +7,10 @@ spring:
   application:
     name: esi-food
   datasource:
-    url: jdbc:postgresql://aws-1-eu-north-1.pooler.supabase.com:5432/postgres
-    username: postgres.gspxryqjsowgvtqsollj
-    password: T7eKMYvvs_?jeW_
-    driver-class-name: org.postgresql.Driver
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: ${DB_DRIVER:org.postgresql.Driver}
     hikari:
       maximum-pool-size: 10
       minimum-idle: 5
