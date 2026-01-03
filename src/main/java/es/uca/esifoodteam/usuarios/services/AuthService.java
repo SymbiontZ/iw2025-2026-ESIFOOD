@@ -17,14 +17,18 @@ import es.uca.esifoodteam.usuarios.repositories.UsuarioRepository;
 @Service
 public class AuthService implements UserDetailsService {
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+    private final UsuarioRepository usuarioRepository;
+    private final UsuarioService usuarioService;
+    private final BCryptPasswordEncoder passwordEncoder;
+
 
     @Autowired
-    private UsuarioService usuarioService;
+    public AuthService(BCryptPasswordEncoder passwordEncoder, UsuarioService usuarioService, UsuarioRepository usuarioRepository) {
+        this.passwordEncoder = passwordEncoder;
+        this.usuarioService = usuarioService;
+        this.usuarioRepository = usuarioRepository;
+    }
 
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
 
     public Optional<Usuario> login(String email, String pass) {
         return usuarioRepository.findByEmailAndEsActivo(email, true)
