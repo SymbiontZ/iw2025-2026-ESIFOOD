@@ -7,8 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class SmokeTest {
 
     @Test
-    void contextLoads() {
-        // Test mínimo para comprobar que JUnit y Maven funcionan
+    void junitIsWired() {
         assertTrue(true);
     }
 }
