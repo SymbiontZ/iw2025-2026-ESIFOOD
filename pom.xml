@@ -13,6 +13,14 @@
     <description>Food ordering system for UCA</description>
     <url>https://github.com/symbiontz/iw2025-2026-ESIFOOD</url>
 
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/symbiontz/iw2025-2026-ESIFOOD</url>
+        </repository>
+    </distributionManagement>
+
     <properties>
         <sonar.organization>symbiontz</sonar.organization>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -143,4 +151,19 @@
 
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>production</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-deploy-plugin</artifactId>
+                        <version>3.1.1</version>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
