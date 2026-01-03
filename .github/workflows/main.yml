@@ -1,8 +1,8 @@
 name: Java CI with Maven
 
 on:
-  push:
-    branches: [ "main" ]
+  release:
+    types: [published, created]
   workflow_dispatch:
 
 jobs:
