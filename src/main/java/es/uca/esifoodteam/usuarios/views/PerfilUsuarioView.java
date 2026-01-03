@@ -10,6 +10,8 @@ import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
+import com.vaadin.flow.component.orderedlayout.FlexComponent.JustifyContentMode;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.TextField;
@@ -18,13 +20,14 @@ import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
+import es.uca.esifoodteam.common.layouts.MainLayout;
 import es.uca.esifoodteam.usuarios.models.Usuario;
 import es.uca.esifoodteam.usuarios.services.CurrentUserService;
 import es.uca.esifoodteam.usuarios.services.UsuarioService;
 
 @Route("perfil")
 @PageTitle("Mi Perfil")
-public class PerfilUsuarioView extends VerticalLayout {
+public class PerfilUsuarioView extends MainLayout {
 
     private final UsuarioService usuarioService;
     private final CurrentUserService currentUserService;
@@ -42,15 +45,17 @@ public class PerfilUsuarioView extends VerticalLayout {
         this.usuarioService = usuarioService;
         this.currentUserService = currentUserService;
 
-        addClassName("perfil-view");
-        setSpacing(false);
-        setPadding(false);
-        setJustifyContentMode(JustifyContentMode.CENTER);
-        setSizeFull();
+        VerticalLayout content = new VerticalLayout();
+        content.addClassName("perfil-view");
+        content.setSpacing(false);
+        content.setPadding(false);
+        content.setJustifyContentMode(JustifyContentMode.CENTER);
+        content.setSizeFull();
 
         configurarFormulario();
         cargarUsuarioActual();
-        construirUI();
+        content.add(construirUI());
+        add(content);
     }
 
     private void configurarFormulario() {
@@ -76,7 +81,7 @@ public class PerfilUsuarioView extends VerticalLayout {
         binder.readBean(usuarioActual);
     }
 
-    private void construirUI() {
+    private VerticalLayout construirUI() {
         VerticalLayout containerCentral = new VerticalLayout();
         containerCentral.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         containerCentral.setJustifyContentMode(JustifyContentMode.CENTER);
@@ -100,7 +105,7 @@ public class PerfilUsuarioView extends VerticalLayout {
         formLayout.add(nombreField, emailField, telefonoField, direccionField);
 
         containerCentral.add(titulo, formLayout, new Hr(), crearBotones());
-        add(containerCentral);
+        return containerCentral;
     }
 
     private VerticalLayout crearBotones() {
@@ -184,7 +189,7 @@ public class PerfilUsuarioView extends VerticalLayout {
 
         // Botón cancelar visible
         dialog.setCancelText("No, conservar cuenta");
-        dialog.setCancelable(true); // necesario para que se muestre el botón Cancel[web:4][web:37]
+        dialog.setCancelable(true);
 
         dialog.addConfirmListener(e -> eliminarDatosDefinitivo(dialog));
         dialog.addCancelListener(e -> {
