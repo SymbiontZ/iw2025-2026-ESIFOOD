@@ -7,6 +7,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Header;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 
 public class Navbar extends Header {
@@ -36,17 +38,27 @@ public class Navbar extends Header {
 
         // COLUMNA DERECHA - LOGIN / LOGOUT
         if (isUserLoggedIn()) {
-            // Mostrar nombre/email del usuario (opcional)
-            String username = getCurrentUsername();
-            if (username != null && !username.isEmpty()) {
-                Anchor userInfo = new Anchor("/perfil", username);
-                userInfo.setClassName("navbar-link");
-                navbarContainers[2].add(userInfo);
-            }
+            // Mostrar icono del carrito
+            Anchor cartAnchor = new Anchor("/carrito");
+            Icon cartIcon = new Icon(VaadinIcon.CART);
+            cartIcon.setClassName("navbar-icon");
+            cartAnchor.add(cartIcon);
+            navbarContainers[2].add(cartAnchor);
+
+            // Mostrar icono del usuario
+            Anchor userProfile = new Anchor("/perfil");
+            Icon userIcon = new Icon(VaadinIcon.USER);
+            userIcon.setClassName("navbar-icon");
+            userProfile.add(userIcon);
+            navbarContainers[2].add(userProfile);
 
             // Enlace para cerrar sesión (Spring Security lo maneja en /logout)
-            Anchor logout = new Anchor("/logout", "Cerrar sesión");
+            Anchor logout = new Anchor("/logout");
+            Icon logoutIcon = new Icon(VaadinIcon.SIGN_OUT);
+            logoutIcon.setClassName("navbar-icon");
+            logout.add(logoutIcon);
             logout.setRouterIgnore(true);
+
             navbarContainers[2].add(logout);
         } else {
             Anchor login = new Anchor("/login", "Iniciar sesión");
@@ -64,13 +76,9 @@ public class Navbar extends Header {
 
     private String getCurrentUsername() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null) {
-            return "";
+        if (auth != null && auth.getPrincipal() instanceof UserDetails) {
+            return ((UserDetails) auth.getPrincipal()).getUsername();
         }
-        Object principal = auth.getPrincipal();
-        if (principal instanceof UserDetails) {
-            return ((UserDetails) principal).getUsername();
-        }
-        return principal.toString();
-    }
+        return auth != null ? auth.getPrincipal().toString() : "";
+}
 }
