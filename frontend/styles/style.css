@@ -36,6 +36,12 @@
     margin-left: 20px;
 }
 
+.navbar-icon {
+  width: 24px;
+  height: 24px;
+  color: white;
+}
+
 
 .footer {
     background-color: #F2EAD3 ;
