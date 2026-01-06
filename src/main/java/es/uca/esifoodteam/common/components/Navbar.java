@@ -7,8 +7,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Header;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 
 public class Navbar extends Header {
@@ -45,12 +48,16 @@ public class Navbar extends Header {
             cartAnchor.add(cartIcon);
             navbarContainers[2].add(cartAnchor);
 
-            // Mostrar icono del usuario
-            Anchor userProfile = new Anchor("/perfil");
+            // Mostrar menú de usuario con clic izquierdo
+            MenuBar userMenu = new MenuBar();
+            userMenu.getStyle().set("border", "none").set("background", "transparent").set("padding", "0");
+            
             Icon userIcon = new Icon(VaadinIcon.USER);
             userIcon.setClassName("navbar-icon");
-            userProfile.add(userIcon);
-            navbarContainers[2].add(userProfile);
+            userMenu.addItem(userIcon, e -> {}).getSubMenu().addItem("Cuenta", ev -> userMenu.getUI().ifPresent(ui -> ui.navigate("/perfil")));
+            userMenu.getItems().get(0).getSubMenu().addItem("Pedidos", ev -> userMenu.getUI().ifPresent(ui -> ui.navigate("/pedidos")));
+            
+            navbarContainers[2].add(userMenu);
 
             // Enlace para cerrar sesión (Spring Security lo maneja en /logout)
             Anchor logout = new Anchor("/logout");
