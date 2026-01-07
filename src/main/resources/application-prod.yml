@@ -1,0 +1,18 @@
+spring:
+  jpa:
+    show-sql: false
+    properties:
+      hibernate.format_sql: false
+
+logging:
+  level:
+    org:
+      springframework:
+        web: WARN
+        orm: WARN
+        jdbc: WARN
+    es.uca.esifood: INFO
+
+# Notas:
+# - Activa este perfil con SPRING_PROFILES_ACTIVE=prod en el servidor.
+# - Reduce el ruido de logs y la sobrecarga de CPU por logging SQL/DEBUG.
