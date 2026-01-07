@@ -6,6 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.button.*;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
 import es.uca.esifoodteam.cart.*;
@@ -26,13 +30,38 @@ public class ProductoCard extends VerticalLayout{
         setSpacing(false);
 
         imagen = new Image();
+        imagen.addClassName("producto-card-imagen");
+        
         nombre = new H3();
+        nombre.addClassName("producto-card-nombre");
+        
         descripcion = new Paragraph();
-        agregarCarro = new Button("Agregar al carrito");
+        descripcion.addClassName("producto-card-descripcion");
+        
+        agregarCarro = new Button("Agregar al carrito", new Icon(VaadinIcon.CART));
+        agregarCarro.addClassName("producto-card-boton");
+        agregarCarro.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        agregarCarro.setWidthFull();
         agregarCarro.addClickListener(clickEvent -> {
                 carritoService.agregarCarrito(producto, 1)
+                    .thenAccept(result -> {
+                        Notification notification = new Notification(
+                            "Producto agregado al carrito",
+                            3000,
+                            Notification.Position.TOP_CENTER
+                        );
+                        notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                        notification.open();
+                    })
                     .exceptionally(ex -> {
                         System.err.println("Error al agregar al carrito: " + ex.getMessage());
+                        Notification notification = new Notification(
+                            "Error al agregar al carrito",
+                            3000,
+                            Notification.Position.TOP_CENTER
+                        );
+                        notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+                        notification.open();
                         return null;
                     });
             }

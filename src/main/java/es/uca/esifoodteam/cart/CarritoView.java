@@ -47,7 +47,7 @@ public class CarritoView extends MainLayout {
         mainLayout.setPadding(false);
         mainLayout.getStyle().set("background", "linear-gradient(to right, #F9F5F0 0%, #f5f1ed 100%)")
                              .set("padding", "3rem 1rem");
-        add(mainLayout);
+        addContent(mainLayout);
 
         // Cargar carrito
         carritoService.getCarro().thenAccept(carro -> {
@@ -171,8 +171,30 @@ public class CarritoView extends MainLayout {
             .multiply(BigDecimal.valueOf(item.getCantidad()));
         Span precio = new Span(String.format("%.2f €", subtotal));
         precio.getStyle().set("font-weight", "600").set("color", "#344f1f").set("min-width", "100px").set("text-align", "right");
+
+        Button borrarBtn = new Button(new Icon(VaadinIcon.TRASH));
+        borrarBtn.addThemeVariants(ButtonVariant.LUMO_ERROR, ButtonVariant.LUMO_TERTIARY_INLINE);
+        borrarBtn.getElement().setProperty("title", "Eliminar del carrito");
+        borrarBtn.addClickListener(e -> {
+            borrarBtn.setEnabled(false);
+            Long productoId = item.getProducto().getId();
+            carritoService.eliminarDelCarrito(productoId)
+                .thenCompose(v -> carritoService.getCarro())
+                .thenAccept(carro -> getUI().ifPresent(ui -> ui.access(() -> {
+                    carroActual = carro;
+                    renderizar(carro);
+                    mostrarNotificacionExito("Producto eliminado del carrito");
+                })))
+                .exceptionally(ex -> {
+                    getUI().ifPresent(ui -> ui.access(() -> {
+                        mostrarNotificacionError("No se pudo eliminar: " + ex.getMessage());
+                        borrarBtn.setEnabled(true);
+                    }));
+                    return null;
+                });
+        });
         
-        fila.add(nombre, cantidad, precio);
+        fila.add(nombre, cantidad, precio, borrarBtn);
         fila.getStyle().set("padding", "12px 0").set("border-bottom", "1px solid #e0e0e0");
         
         return fila;

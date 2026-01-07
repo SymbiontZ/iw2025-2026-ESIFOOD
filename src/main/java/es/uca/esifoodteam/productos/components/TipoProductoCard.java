@@ -11,6 +11,7 @@ public class TipoProductoCard extends VerticalLayout{
     public TipoProductoCard(TipoProducto tipoProducto) {
         setPadding(true);
         setSpacing(true);
+        setHeightFull();
 
         addClassName("tipo-producto-card");
 
@@ -22,6 +23,8 @@ public class TipoProductoCard extends VerticalLayout{
         );
 
         H2 nombre = new H2(tipoProducto.getNombre());
+        nombre.addClassName("tipo-producto-nombre");
+        
         add(imagen, nombre);
     }
     

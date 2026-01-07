@@ -98,4 +98,39 @@ public class CarritoService {
         WebStorage.removeItem(Storage.LOCAL_STORAGE, CARRITO_KEY);
         return CompletableFuture.completedFuture(null);
     }
+
+    public CompletableFuture<Void> eliminarDelCarrito(Long productoId) {
+        return WebStorage.getItem(Storage.LOCAL_STORAGE, CARRITO_KEY)
+            .thenCompose(carroJson -> {
+                CarroSnapshot carro;
+                if (carroJson == null || carroJson.isEmpty()) {
+                    carro = new CarroSnapshot();
+                } else {
+                    try {
+                        carro = mapper.readValue(carroJson, CarroSnapshot.class);
+                    } catch (Exception e) {
+                        System.err.println("Error cargando el carro para eliminar: " + e.getMessage());
+                        carro = new CarroSnapshot();
+                    }
+                }
+
+                if (carro.getItems() != null && productoId != null) {
+                    boolean eliminado = false;
+                    for (int i = 0; i < carro.getItems().size(); i++) {
+                        ItemCarroSnapshot it = carro.getItems().get(i);
+                        if (productoId.equals(it.getProductoId())) {
+                            carro.getItems().remove(i);
+                            eliminado = true;
+                            System.out.println("Eliminado 1 item del carro (prodId=" + productoId + ")");
+                            break; // solo una ocurrencia
+                        }
+                    }
+                    if (!eliminado) {
+                        System.out.println("No se encontró item a eliminar (prodId=" + productoId + ")");
+                    }
+                }
+
+                return guardar_carro(carro);
+            });
+    }
 }

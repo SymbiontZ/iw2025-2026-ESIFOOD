@@ -126,7 +126,7 @@ public class LoginView extends MainLayout implements BeforeEnterObserver {
         loginCard.add(headerLayout, subtitulo, formLayout, registroLayout);
         content.add(loginCard);
 
-        setContent(content);
+        addContent(content);
     }
 
     @Override

@@ -49,7 +49,7 @@ public class PerfilUsuarioView extends MainLayout {
         configurarFormulario();
         cargarUsuarioActual();
         content.add(construirUI());
-        add(content);
+        addContent(content);
     }
 
     private void configurarFormulario() {

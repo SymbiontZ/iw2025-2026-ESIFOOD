@@ -60,13 +60,13 @@ public class UsuariosPedidos extends MainLayout {
         titleLayout.add(titleIcon, titulo);
         content.add(titleLayout);
 
-        // Sección de ÚLTIMOS PEDIDOS
+        // Sección de PEDIDOS PENDIENTES
         HorizontalLayout subtituloUltimosLayout = new HorizontalLayout();
         subtituloUltimosLayout.setAlignItems(Alignment.CENTER);
-        Icon ultimosIcon = new Icon(VaadinIcon.FIRE);
+        Icon ultimosIcon = new Icon(VaadinIcon.HOURGLASS);
         ultimosIcon.setSize("20px");
-        ultimosIcon.getStyle().set("color", "#f39c12");
-        H3 subtituloUltimos = new H3("Últimos Pedidos");
+        ultimosIcon.getStyle().set("color", "#e74c3c");
+        H3 subtituloUltimos = new H3("Pedidos Pendientes");
         subtituloUltimos.getStyle().set("margin", "0").set("color", "#344f1f");
         subtituloUltimosLayout.add(ultimosIcon, subtituloUltimos);
         content.add(subtituloUltimosLayout);
@@ -95,7 +95,7 @@ public class UsuariosPedidos extends MainLayout {
         configurarGridHistorial();
         content.add(gridHistorial);
 
-        setContent(content);
+        addContent(content);
     }
 
     private void configurarGridUltimos() {
@@ -214,9 +214,11 @@ public class UsuariosPedidos extends MainLayout {
         // Ordenar de más reciente a más antiguo
         misPedidos.sort((a, b) -> b.getFechaHora().compareTo(a.getFechaHora()));
 
-        // Últimos 5 pedidos
-        List<Pedido> ultimos = misPedidos.size() <= 5 ? misPedidos : misPedidos.subList(0, 5);
-        gridUltimos.setItems(ultimos);
+        // Pedidos pendientes (todos excepto Entregado)
+        List<Pedido> pendientes = misPedidos.stream()
+                .filter(p -> !p.getEstado().getNombre().equals("Entregado") && !p.getEstado().getNombre().equals("Recogido"))
+                .toList();
+        gridUltimos.setItems(pendientes);
 
         // Historial completo
         gridHistorial.setItems(misPedidos);
@@ -238,7 +240,7 @@ public class UsuariosPedidos extends MainLayout {
         mensajeDiv.add(mensajeH3);
         
         emptyLayout.add(mensajeDiv);
-        setContent(emptyLayout);
+        addContent(emptyLayout);
     }
 
     private void mostrarDetallesPedido(Pedido pedido) {

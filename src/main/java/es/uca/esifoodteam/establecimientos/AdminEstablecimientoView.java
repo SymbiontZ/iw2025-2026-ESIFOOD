@@ -8,6 +8,8 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -51,7 +53,7 @@ public class AdminEstablecimientoView extends MainLayout implements BeforeEnterO
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
         if (!tienePermisos()) {
-            Notification.show("❌ Acceso denegado", 3000, Notification.Position.TOP_CENTER);
+            Notification.show("Acceso denegado", 3000, Notification.Position.TOP_CENTER);
             // Igual que en AdminView:
             event.forwardTo(""); // o LoginView.class, etc.
         }
@@ -70,7 +72,8 @@ public class AdminEstablecimientoView extends MainLayout implements BeforeEnterO
         content.setPadding(true);
         content.setSizeFull();
 
-        H2 header = new H2("🏪 Establecimiento");
+        H2 header = new H2("Establecimiento");
+        header.addClassName("admin-header");
         content.add(header);
 
         nombreField = new TextField("Nombre");
@@ -101,26 +104,30 @@ public class AdminEstablecimientoView extends MainLayout implements BeforeEnterO
             .set("margin-top", "20px");
         content.add(infoDiv);
 
-        add(content);
+        addContent(content);
     }
 
     private void actualizarBotones() {
         botonesLayout.removeAll();
 
         if (modoEdicion) {
-            Button btnGuardar = new Button("💾 Guardar", e -> guardar());
-            btnGuardar.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+            Button btnGuardar = new Button("Guardar", new Icon(VaadinIcon.CHECK));
+            btnGuardar.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_SUCCESS);
+            btnGuardar.addClickListener(e -> guardar());
 
-            Button btnCancelar = new Button("❌ Cancelar", e -> cancelar());
+            Button btnCancelar = new Button("Cancelar", new Icon(VaadinIcon.CLOSE));
             btnCancelar.addThemeVariants(ButtonVariant.LUMO_ERROR);
+            btnCancelar.addClickListener(e -> cancelar());
 
             botonesLayout.add(btnGuardar, btnCancelar);
         } else {
-            Button btnEditar = new Button("✏️ Editar", e -> editar());
+            Button btnEditar = new Button("Editar", new Icon(VaadinIcon.EDIT));
             btnEditar.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+            btnEditar.addClickListener(e -> editar());
 
-            Button btnVer = new Button("📋 Ver info", e -> mostrarInfo());
+            Button btnVer = new Button("Ver info", new Icon(VaadinIcon.FILE));
             btnVer.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
+            btnVer.addClickListener(e -> mostrarInfo());
 
             botonesLayout.add(btnEditar, btnVer);
         }
@@ -179,13 +186,13 @@ public class AdminEstablecimientoView extends MainLayout implements BeforeEnterO
 
         infoDiv.removeAll();
 
-        H3 titulo = new H3("🏪 " + establecimiento.getNombre());
-        Paragraph dir = new Paragraph("📍 Dirección: " + establecimiento.getDireccion());
+        H3 titulo = new H3(establecimiento.getNombre());
+        Paragraph dir = new Paragraph("Dirección: " + establecimiento.getDireccion());
 
-        H3 auditoria = new H3("📋 Auditoría");
-        Paragraph modificadoPor = new Paragraph("✏️ Modificado por: " +
+        H3 auditoria = new H3("Auditoría");
+        Paragraph modificadoPor = new Paragraph("Modificado por: " +
                 (establecimiento.getModifiedBy() != null ? establecimiento.getModifiedBy() : "-"));
-        Paragraph ultimaMod = new Paragraph("🔄 Última modificación: " +
+        Paragraph ultimaMod = new Paragraph("Última modificación: " +
                 (establecimiento.getModifiedDate() != null ? establecimiento.getModifiedDate().toString() : "-"));
 
         infoDiv.add(titulo, dir, auditoria, modificadoPor, ultimaMod);

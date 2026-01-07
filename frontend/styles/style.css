@@ -74,8 +74,44 @@
 .footer {
     background-color: #F2EAD3;
     border-top: 2px solid #ddd;
-    padding: 20px;
+    padding: 20px 30px;
     margin-top: auto;
+    align-items: center;
+    width: 100%;
+    flex-shrink: 0;
+}
+
+.footer-text {
+    font-size: 14px;
+    color: #344f1f;
+    font-weight: 500;
+    margin: 0;
+}
+
+.footer-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #344f1f;
+    color: white;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    padding: 0;
+}
+
+.footer-link:hover {
+    background-color: #2d4419;
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(52, 79, 31, 0.3);
+}
+
+.footer-link vaadin-icon {
+    width: 20px;
+    height: 20px;
+    color: white;
 }
 
 /* === CONTENT STYLES === */
@@ -105,6 +141,114 @@ vaadin-grid::part(row) {
 
 vaadin-grid::part(body-cell) {
     padding: 12px 16px;
+}
+
+/* === ADMIN USUARIOS STYLES === */
+.admin-header {
+    color: #344f1f;
+    font-size: 28px;
+    font-weight: 600;
+    margin: 0 0 20px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.usuarios-grid {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+vaadin-grid {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+vaadin-grid::part(header-cell) {
+    background: linear-gradient(135deg, #344f1f 0%, #2d4419 100%);
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+vaadin-grid::part(header-cell):hover {
+    background: linear-gradient(135deg, #2d4419 0%, #1f2d0f 100%);
+}
+
+vaadin-text-field {
+    width: 100%;
+}
+
+vaadin-text-field::part(input-field) {
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    background: white;
+    transition: all 0.3s ease;
+}
+
+vaadin-text-field::part(input-field):hover {
+    border-color: #344f1f;
+    box-shadow: 0 2px 6px rgba(52, 79, 31, 0.1);
+}
+
+vaadin-text-field::part(input-field):focus {
+    border-color: #344f1f;
+    box-shadow: 0 0 0 3px rgba(52, 79, 31, 0.15);
+}
+
+vaadin-button {
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+vaadin-button[theme~="primary"] {
+    background: linear-gradient(135deg, #344f1f 0%, #2d4419 100%) !important;
+    color: white !important;
+    box-shadow: 0 2px 8px rgba(52, 79, 31, 0.2);
+}
+
+vaadin-button[theme~="primary"]:hover {
+    background: linear-gradient(135deg, #2d4419 0%, #1f2d0f 100%) !important;
+    box-shadow: 0 4px 12px rgba(52, 79, 31, 0.3);
+    transform: translateY(-1px);
+}
+
+vaadin-button[theme~="success"] {
+    background: linear-gradient(135deg, #4CAF50 0%, #388E3C 100%) !important;
+    color: white !important;
+    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.2);
+}
+
+vaadin-button[theme~="success"]:hover {
+    background: linear-gradient(135deg, #388E3C 0%, #2E7D32 100%) !important;
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+vaadin-button[theme~="error"] {
+    background: linear-gradient(135deg, #F44336 0%, #D32F2F 100%) !important;
+    color: white !important;
+    box-shadow: 0 2px 8px rgba(244, 67, 54, 0.2);
+}
+
+vaadin-button[theme~="error"]:hover {
+    background: linear-gradient(135deg, #D32F2F 0%, #C62828 100%) !important;
+    box-shadow: 0 4px 12px rgba(244, 67, 54, 0.3);
+}
+
+vaadin-button[theme~="tertiary"] {
+    color: #344f1f !important;
+    border: 1px solid #ddd;
+    background: white !important;
+}
+
+vaadin-button[theme~="tertiary"]:hover {
+    border-color: #344f1f;
+    background: #f5f5f5 !important;
 }
 
 /* === IMAGE STYLES === */

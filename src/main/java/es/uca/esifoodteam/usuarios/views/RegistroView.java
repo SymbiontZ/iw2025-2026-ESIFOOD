@@ -47,7 +47,7 @@ public class RegistroView extends MainLayout {
         content.getStyle().set("background", "linear-gradient(to right, #F9F5F0 0%, #f5f1ed 100%)")
                            .set("padding", "3rem 1rem");
 
-        add(construirUI(content));
+        addContent(construirUI(content));
     }
 
     private VerticalLayout construirUI(VerticalLayout content) {

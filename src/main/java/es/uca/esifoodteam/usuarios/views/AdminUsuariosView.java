@@ -78,8 +78,8 @@ public class AdminUsuariosView extends MainLayout {  // ✅ CAMBIADO de Vertical
         content.setPadding(true);
         content.setSizeFull();
 
-        crearUI(content);  // ✅ Pasar content al método
-        add(content);      // ✅ Añadir al MainLayout
+        crearUI(content);
+        addContent(content);
     }
 
     @Override
@@ -94,10 +94,10 @@ public class AdminUsuariosView extends MainLayout {  // ✅ CAMBIADO de Vertical
     }
 
     private void crearUI(VerticalLayout content) {  // ✅ Recibe content como parámetro
-        H2 header = new H2("👥 Gestión de Usuarios");
+        H2 header = new H2("Gestión de Usuarios");
         header.addClassName("admin-header");
 
-        Button btnAgregar = new Button("➕ Agregar Nuevo Usuario", new Icon(VaadinIcon.PLUS_CIRCLE));
+        Button btnAgregar = new Button("Agregar Nuevo Usuario", new Icon(VaadinIcon.PLUS_CIRCLE));
         btnAgregar.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_LARGE);
         btnAgregar.addClickListener(e -> abrirDialogCrear());
 
@@ -123,11 +123,13 @@ public class AdminUsuariosView extends MainLayout {  // ✅ CAMBIADO de Vertical
         buscador.setPlaceholder("Buscar por nombre o email...");
         buscador.setWidth("300px");
 
-        btnBuscar = new Button("🔍 Buscar", e -> ejecutarBusqueda());
+        btnBuscar = new Button("Buscar", new Icon(VaadinIcon.SEARCH));
         btnBuscar.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        btnBuscar.addClickListener(e -> ejecutarBusqueda());
 
-        btnLimpiar = new Button("🗑️ Limpiar", e -> limpiarBusqueda());
+        btnLimpiar = new Button("Limpiar", new Icon(VaadinIcon.TRASH));
         btnLimpiar.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        btnLimpiar.addClickListener(e -> limpiarBusqueda());
 
         buscador.addKeyPressListener(Key.ENTER, e -> ejecutarBusqueda());
 
@@ -147,10 +149,33 @@ public class AdminUsuariosView extends MainLayout {  // ✅ CAMBIADO de Vertical
         grid.addColumn(usuario -> usuario.getTipo_id() != null ? usuario.getTipo_id().getNombre() : "-")
                 .setHeader("Tipo").setSortable(true).setAutoWidth(true);
 
-        grid.addColumn(Usuario::getEsActivo).setHeader("Activo").setFlexGrow(0).setWidth("80px");
-        grid.addColumn(usuario -> usuario.getPass() != null && !usuario.getPass().isEmpty()
-                ? "🔐 Configurada" : "❌ Pendiente")
-                .setHeader("Contraseña").setSortable(false).setFlexGrow(0).setWidth("120px");
+        grid.addComponentColumn(usuario -> {
+            if (usuario.getEsActivo()) {
+                Icon iconoTick = new Icon(VaadinIcon.CHECK);
+                iconoTick.getStyle().set("color", "#4CAF50");
+                iconoTick.getStyle().set("width", "20px");
+                iconoTick.getStyle().set("height", "20px");
+                return iconoTick;
+            } else {
+                Icon iconoCruz = new Icon(VaadinIcon.CLOSE);
+                iconoCruz.getStyle().set("color", "#F44336");
+                iconoCruz.getStyle().set("width", "20px");
+                iconoCruz.getStyle().set("height", "20px");
+                return iconoCruz;
+            }
+        }).setHeader("Activo").setFlexGrow(0).setWidth("80px");
+        
+        grid.addComponentColumn(usuario -> {
+            Icon icono = new Icon(VaadinIcon.LOCK);
+            if (usuario.getPass() != null && !usuario.getPass().isEmpty()) {
+                icono.getStyle().set("color", "#4CAF50");
+            } else {
+                icono.getStyle().set("color", "#F44336");
+            }
+            icono.getStyle().set("width", "20px");
+            icono.getStyle().set("height", "20px");
+            return icono;
+        }).setHeader("Contraseña").setSortable(false).setFlexGrow(0).setWidth("120px");
 
         grid.addComponentColumn(this::crearBotonesAccion);
     }
@@ -177,7 +202,7 @@ public class AdminUsuariosView extends MainLayout {  // ✅ CAMBIADO de Vertical
 
     private void crearDialogEditar() {
         dialogEditar = new Dialog();
-        dialogEditar.setHeaderTitle("✏️ Editar Usuario");
+        dialogEditar.setHeaderTitle("Editar Usuario");
         dialogEditar.setWidth("600px");
         dialogEditar.setHeight("auto");
 
@@ -186,7 +211,7 @@ public class AdminUsuariosView extends MainLayout {  // ✅ CAMBIADO de Vertical
         TextField telefonoField = new TextField("Teléfono");
         TextField direccionField = new TextField("Dirección");
 
-        passField = new TextField("🔐 Contraseña (solo creación)");
+        passField = new TextField("Contraseña (solo creación)");
         passField.setValue("");
         passField.setHelperText("Mínimo 8 caracteres");
 
@@ -204,8 +229,11 @@ public class AdminUsuariosView extends MainLayout {  // ✅ CAMBIADO de Vertical
         binder.bind(comboTipoUsuario, "tipo_id");
         binder.bind(activoField, "esActivo");
 
-        Button btnGuardar = new Button("💾 Guardar", e -> guardarUsuario());
-        Button btnCancelar = new Button("❌ Cancelar", e -> {
+        Button btnGuardar = new Button("Guardar", new Icon(VaadinIcon.CHECK));
+        btnGuardar.addThemeVariants(ButtonVariant.LUMO_SUCCESS, ButtonVariant.LUMO_PRIMARY);
+        btnGuardar.addClickListener(e -> guardarUsuario());
+        Button btnCancelar = new Button("Cancelar", new Icon(VaadinIcon.CLOSE));
+        btnCancelar.addClickListener(e -> {
             dialogEditar.close();
             usuarioEditando = null;
         });
@@ -223,7 +251,7 @@ public class AdminUsuariosView extends MainLayout {  // ✅ CAMBIADO de Vertical
 
     private void crearDialogVer() {
         dialogVer = new Dialog();
-        dialogVer.setHeaderTitle("👁️ Ver Usuario");
+        dialogVer.setHeaderTitle("Ver Usuario");
         dialogVer.setWidth("450px");
         dialogVer.setHeight("auto");
     }
@@ -238,7 +266,7 @@ public class AdminUsuariosView extends MainLayout {  // ✅ CAMBIADO de Vertical
         passField.setValue("");
         passField.focus();
 
-        dialogEditar.setHeaderTitle("➕ Nuevo Usuario");
+        dialogEditar.setHeaderTitle("Nuevo Usuario");
         dialogEditar.open();
     }
 
@@ -250,7 +278,7 @@ public class AdminUsuariosView extends MainLayout {  // ✅ CAMBIADO de Vertical
         binder.readBean(usuario);
         passField.setVisible(false);
 
-        dialogEditar.setHeaderTitle("✏️ Editar " + usuario.getNombre());
+        dialogEditar.setHeaderTitle("Editar " + usuario.getNombre());
         dialogEditar.open();
     }
 
@@ -265,25 +293,25 @@ public class AdminUsuariosView extends MainLayout {  // ✅ CAMBIADO de Vertical
         detalles.add(new Paragraph("Dirección: " + (usuario.getDireccion().isEmpty() ? "-" : usuario.getDireccion())));
         detalles.add(new Paragraph("Teléfono: " + (usuario.getTelefono().isEmpty() ? "-" : usuario.getTelefono())));
         detalles.add(new Paragraph("Tipo: " + (usuario.getTipo_id() != null ? usuario.getTipo_id().getNombre() : "-")));
-        detalles.add(new Paragraph("Estado: " + (usuario.getEsActivo() ? "✅ Activo" : "❌ Inactivo")));
+        detalles.add(new Paragraph("Estado: " + (usuario.getEsActivo() ? "Activo" : "Inactivo")));
         detalles.add(new Paragraph("Contraseña: " +
-                (usuario.getPass() != null && !usuario.getPass().isEmpty() ? "🔐 Configurada" : "❌ Pendiente")));
+                (usuario.getPass() != null && !usuario.getPass().isEmpty() ? "Configurada" : "Pendiente")));
 
-        detalles.add(new H3("📋 Auditoría"));
+        detalles.add(new H3("Auditoría"));
 
         detalles.add(new Paragraph("Creado por: " + 
-                (usuario.getCreatedBy() != null ? usuario.getCreatedBy() : "❌ No disponible")));
+                (usuario.getCreatedBy() != null ? usuario.getCreatedBy() : "No disponible")));
         
         detalles.add(new Paragraph("Fecha creación: " + 
                 (usuario.getCreatedDate() != null ? 
-                        usuario.getCreatedDate().toString() : "❌ No disponible")));
+                        usuario.getCreatedDate().toString() : "No disponible")));
         
         detalles.add(new Paragraph("Modificado por: " + 
-                (usuario.getModifiedBy() != null ? usuario.getModifiedBy() : "❌ No disponible")));
+                (usuario.getModifiedBy() != null ? usuario.getModifiedBy() : "No disponible")));
         
         detalles.add(new Paragraph("Última modificación: " + 
                 (usuario.getModifiedDate() != null ? 
-                        usuario.getModifiedDate().toString() : "❌ No disponible")));
+                        usuario.getModifiedDate().toString() : "No disponible")));
 
         dialogVer.add(detalles);
         dialogVer.open();
@@ -297,33 +325,33 @@ public class AdminUsuariosView extends MainLayout {  // ✅ CAMBIADO de Vertical
 
                 String passPlana = passField.getValue().trim();
                 if (passPlana == null || passPlana.isEmpty()) {
-                    Notification.show("❌ La contraseña es obligatoria", 3000, Notification.Position.MIDDLE);
+                    Notification.show("La contraseña es obligatoria", 3000, Notification.Position.MIDDLE);
                     return;
                 }
                 if (passPlana.length() < 8) {
-                    Notification.show("❌ La contraseña debe tener al menos 8 caracteres", 3000, Notification.Position.MIDDLE);
+                    Notification.show("La contraseña debe tener al menos 8 caracteres", 3000, Notification.Position.MIDDLE);
                     return;
                 }
 
                 nuevoUsuario.setPass(BCrypt.hashpw(passPlana, BCrypt.gensalt()));
 
                 if (nuevoUsuario.getTipo_id() == null) {
-                    Notification.show("❌ Selecciona un tipo de usuario", 3000, Notification.Position.MIDDLE);
+                    Notification.show("Selecciona un tipo de usuario", 3000, Notification.Position.MIDDLE);
                     return;
                 }
 
                 usuarioService.create(nuevoUsuario);
-                Notification.show("✅ Usuario creado correctamente", 3000, Notification.Position.MIDDLE);
+                Notification.show("Usuario creado correctamente", 3000, Notification.Position.MIDDLE);
             } else {
                 binder.writeBean(usuarioEditando);
 
                 if (usuarioEditando.getTipo_id() == null) {
-                    Notification.show("❌ Selecciona un tipo de usuario", 3000, Notification.Position.MIDDLE);
+                    Notification.show("Selecciona un tipo de usuario", 3000, Notification.Position.MIDDLE);
                     return;
                 }
 
                 usuarioService.update(usuarioEditando.getId(), usuarioEditando);
-                Notification.show("✅ Usuario actualizado correctamente", 2000, Notification.Position.MIDDLE);
+                Notification.show("Usuario actualizado correctamente", 2000, Notification.Position.MIDDLE);
             }
 
             dialogEditar.close();
@@ -331,16 +359,16 @@ public class AdminUsuariosView extends MainLayout {  // ✅ CAMBIADO de Vertical
             todosLosUsuarios = usuarioService.findAll();
             grid.setItems(todosLosUsuarios);
         } catch (ValidationException e) {
-            Notification.show("❌ Datos inválidos: " + e.getMessage(), 4000, Notification.Position.MIDDLE);
+            Notification.show("Datos inválidos: " + e.getMessage(), 4000, Notification.Position.MIDDLE);
         } catch (Exception e) {
-            Notification.show("❌ Error: " + e.getMessage(), 5000, Notification.Position.MIDDLE);
+            Notification.show("Error: " + e.getMessage(), 5000, Notification.Position.MIDDLE);
         }
     }
 
     private void ejecutarBusqueda() {
         String filtro = buscador.getValue().trim();
         if (filtro.isEmpty()) {
-            Notification.show("⚠️ Ingresa un término para buscar", 2000, Notification.Position.MIDDLE);
+            Notification.show("Ingresa un término para buscar", 2000, Notification.Position.MIDDLE);
             return;
         }
 
@@ -350,45 +378,47 @@ public class AdminUsuariosView extends MainLayout {  // ✅ CAMBIADO de Vertical
                 .collect(Collectors.toList());
 
         grid.setItems(filtrados);
-        Notification.show("✅ Encontrados " + filtrados.size() + " resultado(s)", 2000, Notification.Position.TOP_CENTER);
+        Notification.show("Encontrados " + filtrados.size() + " resultado(s)", 2000, Notification.Position.TOP_CENTER);
     }
 
     private void limpiarBusqueda() {
         buscador.clear();
         grid.setItems(todosLosUsuarios);
-        Notification.show("🔄 Búsqueda limpiada", 1500, Notification.Position.TOP_CENTER);
+        Notification.show("Búsqueda limpiada", 1500, Notification.Position.TOP_CENTER);
     }
 
     private void eliminarUsuario(Usuario usuario) {
         Dialog confirmDialog = new Dialog();
-        confirmDialog.setHeaderTitle("⚠️ Confirmar Desactivación");
+        confirmDialog.setHeaderTitle("Confirmar Desactivación");
         confirmDialog.setWidth("450px");
 
         VerticalLayout content = new VerticalLayout();
         content.setSpacing(true);
         content.setPadding(true);
 
-        content.add(new Paragraph("¿Estás seguro de que quieres **desactivar** al usuario?"));
+        content.add(new Paragraph("¿Estás seguro de que quieres desactivar al usuario?"));
         content.add(new H3(usuario.getNombre()));
         content.add(new Paragraph("Email: " + usuario.getEmail()));
-        content.add(new Paragraph("Esta acción es **irreversible**"));
+        content.add(new Paragraph("Esta acción es irreversible"));
         content.add(new Paragraph("El usuario no podrá iniciar sesión hasta ser reactivado."));
 
-        Button btnConfirmar = new Button("✅ Sí, desactivar usuario", e -> {
+        Button btnConfirmar = new Button("Sí, desactivar usuario", new Icon(VaadinIcon.CHECK));
+        btnConfirmar.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_ERROR);
+        btnConfirmar.addClickListener(e -> {
             try {
                 usuarioService.delete(usuario.getId());
-                Notification.show("✅ Usuario '" + usuario.getNombre() + "' desactivado", 3000, Notification.Position.MIDDLE);
+                Notification.show("Usuario '" + usuario.getNombre() + "' desactivado", 3000, Notification.Position.MIDDLE);
                 todosLosUsuarios = usuarioService.findAll();
                 grid.setItems(todosLosUsuarios);
             } catch (Exception ex) {
-                Notification.show("❌ Error: " + ex.getMessage(), 5000, Notification.Position.MIDDLE);
+                Notification.show("Error: " + ex.getMessage(), 5000, Notification.Position.MIDDLE);
             }
             confirmDialog.close();
         });
-        btnConfirmar.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_ERROR);
 
-        Button btnCancelar = new Button("❌ Cancelar", e -> confirmDialog.close());
+        Button btnCancelar = new Button("Cancelar", new Icon(VaadinIcon.CLOSE));
         btnCancelar.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        btnCancelar.addClickListener(e -> confirmDialog.close());
 
         HorizontalLayout buttons = new HorizontalLayout(btnConfirmar, btnCancelar);
         buttons.setWidthFull();

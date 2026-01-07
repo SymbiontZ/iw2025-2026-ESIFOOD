@@ -70,6 +70,6 @@ public class AdminView extends MainLayout implements BeforeEnterObserver {
             getUI().ifPresent(ui -> ui.navigate("admin/establecimiento")));
 
         content.add(usuariosBtn, pedidosBtn, establecimientosBtn);
-        add(content);
+        addContent(content);
     }
 }

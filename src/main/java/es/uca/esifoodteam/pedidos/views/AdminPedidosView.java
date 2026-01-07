@@ -12,9 +12,12 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -50,7 +53,7 @@ public class AdminPedidosView extends MainLayout {
 
     // Campos de formulario
     private final TextField precioField = new TextField("Precio (€)");
-    private final TextField fechaField = new TextField("Fecha (yyyy-MM-dd HH:mm)");
+    private final TextField fechaField = new TextField("Fecha (dd/MM/yyyy HH:mm)");
     private final ComboBox<EstadoPedido> estadoField = new ComboBox<>("Estado");
     private final TextArea observacionesField = new TextArea("Observaciones");
 
@@ -78,8 +81,16 @@ public class AdminPedidosView extends MainLayout {
         content.setPadding(true);
         content.setSpacing(true);
 
-        H2 titulo = new H2("📦 Gestión de Pedidos");
-        content.add(titulo);
+        H2 titulo = new H2();
+        HorizontalLayout tituloLayout = new HorizontalLayout();
+        tituloLayout.setAlignItems(com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment.CENTER);
+        Icon tituloIcon = new Icon(VaadinIcon.PACKAGE);
+        tituloIcon.setSize("32px");
+        tituloIcon.getStyle().set("color", "#344f1f");
+        titulo.setText("Gestión de Pedidos");
+        titulo.getStyle().set("margin", "0").set("color", "#344f1f");
+        tituloLayout.add(tituloIcon, titulo);
+        content.add(tituloLayout);
 
         configurarGridPedidos();
         configurarGridLineas();
@@ -116,7 +127,7 @@ public class AdminPedidosView extends MainLayout {
 
         content.add(contenido);
         
-        add(content);
+        addContent(content);
         
         limpiarFormulario();
     }
@@ -147,6 +158,8 @@ public class AdminPedidosView extends MainLayout {
         grid.setHeight("350px");
 
         grid.addColumn(Pedido::getId).setHeader("ID").setAutoWidth(true).setFlexGrow(0);
+        grid.addColumn(p -> p.getUsuario() != null ? p.getUsuario().getNombre() : "-")
+                .setHeader("Usuario").setAutoWidth(true).setFlexGrow(1);
         grid.addColumn(Pedido::getPrecio).setHeader("Precio (€)").setAutoWidth(true).setFlexGrow(1);
         grid.addColumn(p -> p.getFechaHora() != null
                 ? p.getFechaHora().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
@@ -154,6 +167,8 @@ public class AdminPedidosView extends MainLayout {
                 .setHeader("Fecha/Hora").setAutoWidth(true).setFlexGrow(1);
         grid.addColumn(p -> p.getEstado() != null ? p.getEstado().getNombre() : "-")
                 .setHeader("Estado").setAutoWidth(true).setFlexGrow(1);
+        grid.addColumn(p -> p.getLineas() != null ? String.valueOf(p.getLineas().size()) : "0")
+                .setHeader("Productos").setAutoWidth(true).setFlexGrow(0);
         grid.addColumn(Pedido::getObservaciones)
                 .setHeader("Observaciones").setAutoWidth(true).setFlexGrow(2);
 
@@ -191,21 +206,61 @@ public class AdminPedidosView extends MainLayout {
     private VerticalLayout crearLayoutFormulario() {
         VerticalLayout formLayout = new VerticalLayout();
         
+        HorizontalLayout tituloFormLayout = new HorizontalLayout();
+        tituloFormLayout.setAlignItems(com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment.CENTER);
+        Icon formIcon = new Icon(VaadinIcon.EDIT);
+        formIcon.setSize("24px");
+        formIcon.getStyle().set("color", "#344f1f");
         H2 tituloForm = new H2("Editar Pedido");
-        tituloForm.getStyle().set("margin-bottom", "1rem");
-        formLayout.add(tituloForm);
+        tituloForm.getStyle().set("margin", "0").set("color", "#344f1f");
+        tituloFormLayout.add(formIcon, tituloForm);
+        formLayout.add(tituloFormLayout);
         
         Div info = new Div();
         info.setText("Selecciona un pedido para editar");
-        info.getStyle().set("color", "#666");
+        info.getStyle().set("color", "#999");
         info.getStyle().set("font-style", "italic");
         info.getStyle().set("margin-bottom", "1rem");
         formLayout.add(info);
         
-        formLayout.add(precioField);
-        formLayout.add(fechaField);
-        formLayout.add(estadoField);
-        formLayout.add(observacionesField);
+        // Campos con iconos
+        HorizontalLayout precioLayout = new HorizontalLayout();
+        precioLayout.setAlignItems(com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment.CENTER);
+        Icon precioIcon = new Icon(VaadinIcon.DOLLAR);
+        precioIcon.setSize("18px");
+        precioIcon.getStyle().set("color", "#27ae60");
+        precioField.setPlaceholder("Precio...");
+        precioLayout.add(precioIcon, precioField);
+        precioLayout.setFlexGrow(1, precioField);
+        formLayout.add(precioLayout);
+        
+        HorizontalLayout fechaLayout = new HorizontalLayout();
+        fechaLayout.setAlignItems(com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment.CENTER);
+        Icon fechaIcon = new Icon(VaadinIcon.CALENDAR);
+        fechaIcon.setSize("18px");
+        fechaIcon.getStyle().set("color", "#3498db");
+        fechaField.setPlaceholder("Fecha...");
+        fechaLayout.add(fechaIcon, fechaField);
+        fechaLayout.setFlexGrow(1, fechaField);
+        formLayout.add(fechaLayout);
+        
+        HorizontalLayout estadoLayout = new HorizontalLayout();
+        estadoLayout.setAlignItems(com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment.CENTER);
+        Icon estadoIcon = new Icon(VaadinIcon.CHECK_CIRCLE);
+        estadoIcon.setSize("18px");
+        estadoIcon.getStyle().set("color", "#f39c12");
+        estadoLayout.add(estadoIcon, estadoField);
+        estadoLayout.setFlexGrow(1, estadoField);
+        formLayout.add(estadoLayout);
+        
+        HorizontalLayout obsLayout = new HorizontalLayout();
+        obsLayout.setAlignItems(com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment.START);
+        Icon obsIcon = new Icon(VaadinIcon.COMMENT_O);
+        obsIcon.setSize("18px");
+        obsIcon.getStyle().set("color", "#9b59b6");
+        obsLayout.add(obsIcon, observacionesField);
+        obsLayout.setFlexGrow(1, observacionesField);
+        formLayout.add(obsLayout);
         
         HorizontalLayout botones = new HorizontalLayout(guardar, cancelar);
         botones.setSpacing(true);
@@ -223,37 +278,34 @@ public class AdminPedidosView extends MainLayout {
         estadoField.setWidthFull();
 
         precioField.setWidthFull();
+        precioField.setReadOnly(true);
         binder.bind(precioField, 
             pedido -> pedido.getPrecio() != null ? pedido.getPrecio().toString() : "",
             (pedido, valorTexto) -> {}
         );
 
         fechaField.setWidthFull();
+        fechaField.setReadOnly(true);
         binder.forField(fechaField)
-            .withConverter(
-                v -> {
-                    try {
-                        if (v == null || v.trim().isEmpty()) return null;
-                        return LocalDateTime.parse(v.trim(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-                    } catch (Exception ex) {
-                        throw new RuntimeException("Formato de fecha inválido");
-                    }
-                },
-                v -> v != null ? v.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) : ""
-            )
-            .bind(Pedido::getFechaHora, Pedido::setFechaHora);
+            .bindReadOnly(p -> p.getFechaHora() != null
+                ? p.getFechaHora().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
+                : "");
 
         observacionesField.setWidthFull();
         binder.bind(estadoField, "estado");
         binder.bind(observacionesField, "observaciones");
 
         guardar.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        guardar.setIcon(new Icon(VaadinIcon.CHECK_CIRCLE));
         guardar.setEnabled(false);
         guardar.addClickListener(e -> guardar());
+        cancelar.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        cancelar.setIcon(new Icon(VaadinIcon.CLOSE));
         cancelar.addClickListener(e -> cancelarEdicion());
         
         masInfoBtn.setEnabled(false);
         masInfoBtn.addThemeVariants(ButtonVariant.LUMO_CONTRAST);
+        masInfoBtn.setIcon(new Icon(VaadinIcon.INFO_CIRCLE));
         masInfoBtn.addClickListener(e -> mostrarInfoAuditoria());
     }
 
@@ -287,39 +339,50 @@ public class AdminPedidosView extends MainLayout {
     private void mostrarInfoAuditoria() {
         if (pedidoInfo == null) return;
         
+        Dialog dialog = new Dialog();
+        dialog.setHeaderTitle("Información del Pedido");
+        dialog.setWidth("500px");
+        dialog.setModal(true);
+        
+        VerticalLayout content = new VerticalLayout();
+        content.setSpacing(true);
+        content.setPadding(true);
+        
         Span infoText = new Span();
         StringBuilder sb = new StringBuilder();
-        sb.append("📋 Pedido #" + pedidoInfo.getId() + "\n\n");
+        sb.append("Pedido #" + pedidoInfo.getId() + "\n\n");
         
         if (pedidoInfo.getUsuario() != null) {
-            sb.append("👤 Usuario ID: " + pedidoInfo.getUsuario().getId() + "\n");
+            sb.append("Usuario: " + pedidoInfo.getUsuario().getNombre() + "\n");
         }
+        sb.append("Productos: " + (pedidoInfo.getLineas() != null ? pedidoInfo.getLineas().size() : 0) + "\n");
         if (pedidoInfo.getCreatedDate() != null) {
             LocalDateTime createdLocal = LocalDateTime.ofInstant(pedidoInfo.getCreatedDate(), ZoneId.systemDefault());
-            sb.append("📅 Creado: " + createdLocal.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) + "\n");
+            sb.append("Creado: " + createdLocal.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) + "\n");
         }
         if (pedidoInfo.getModifiedDate() != null) {
             LocalDateTime modifiedLocal = LocalDateTime.ofInstant(pedidoInfo.getModifiedDate(), ZoneId.systemDefault());
-            sb.append("✏️ Modificado: " + modifiedLocal.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) + "\n");
+            sb.append("Modificado: " + modifiedLocal.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) + "\n");
         }
         if (pedidoInfo.getCreatedBy() != null) {
-            sb.append("👨‍💻 Creado por: " + pedidoInfo.getCreatedBy() + "\n");
+            sb.append("Creado por: " + pedidoInfo.getCreatedBy() + "\n");
         }
         if (pedidoInfo.getModifiedBy() != null) {
-            sb.append("👨‍💻 Modificado por: " + pedidoInfo.getModifiedBy() + "\n");
-        }
-        sb.append("📦 Líneas: " + (pedidoInfo.getLineas() != null ? pedidoInfo.getLineas().size() : 0));
-        if (pedidoInfo.getActualizaciones() != null) {
-            sb.append("\n🔄 Actualizaciones: " + pedidoInfo.getActualizaciones().size());
+            sb.append("Modificado por: " + pedidoInfo.getModifiedBy());
         }
         
         infoText.setText(sb.toString());
         infoText.getElement().getStyle().set("white-space", "pre-line");
+        content.add(infoText);
         
-        Notification notification = new Notification(infoText);
-        notification.setDuration(10000);
-        notification.setPosition(Notification.Position.MIDDLE);
-        notification.open();
+        dialog.add(content);
+        
+        Button cerrar = new Button("Cerrar", new Icon(VaadinIcon.CLOSE));
+        cerrar.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        cerrar.addClickListener(e -> dialog.close());
+        
+        dialog.getFooter().add(cerrar);
+        dialog.open();
     }
 
     private void guardar() {
